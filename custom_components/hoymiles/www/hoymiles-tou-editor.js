@@ -167,7 +167,7 @@ function _hmTouRegister() {
 
         /* segmented control (day 1..8) */
         .seg { display: inline-flex; padding: 2px; gap: 2px; max-width: 100%;
-               overflow-x: auto;
+               flex-wrap: wrap;
                background: var(--secondary-background-color, rgba(120,120,128,.16));
                border-radius: 10px; }
         .seg .tab { border: none; background: none; font: inherit;
