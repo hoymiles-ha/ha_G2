@@ -1,7 +1,7 @@
 /* ============================================================================
  * Hoymiles Micro Storage — Battery (HiBattery X) card
  * ----------------------------------------------------------------------------
- * Lovelace card: `custom:hoymiles-battery`
+ * Lovelace card: `custom:hoymiles-g2-battery`
  *
  * Renders the physical battery stack of a Hoymiles micro storage device the
  * way the vendor app does:
@@ -24,7 +24,7 @@
  * Everything is hand-rolled SVG (no chart library, no CDN).
  *
  * Card config:
- *   type: custom:hoymiles-battery
+ *   type: custom:hoymiles-g2-battery
  *   dev_id: MSA-280520260806     # required
  *   title: HiBattery X           # optional, overrides the detected model
  *   show_title: false            # optional, hide the header title
@@ -478,7 +478,7 @@ function _hmBatteryRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-battery-editor");
+      return document.createElement("hoymiles-g2-battery-editor");
     }
 
     static getStubConfig() {
@@ -543,7 +543,7 @@ function _hmBatteryRegister() {
 
     setConfig(config) {
       if (!config || !config.dev_id) {
-        throw new Error("hoymiles-battery: 'dev_id' is required");
+        throw new Error("hoymiles-g2-battery: 'dev_id' is required");
       }
       this._config = { ...config };
       this._cache.clear();
@@ -712,7 +712,7 @@ function _hmBatteryRegister() {
       }
 
       if (!found && hass.entities) {
-        const uniqueSuffix = `hoymiles_${this._dev()}_${suffix}`;
+        const uniqueSuffix = `hoymiles_g2_${this._dev()}_${suffix}`;
         for (const [entityId, entry] of Object.entries(hass.entities)) {
           if (entry && entry.unique_id === uniqueSuffix) {
             found = entityId;
@@ -1193,17 +1193,17 @@ function _hmBatteryRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-battery-editor")) {
-    customElements.define("hoymiles-battery-editor", HoymilesBatteryEditor);
+  if (!customElements.get("hoymiles-g2-battery-editor")) {
+    customElements.define("hoymiles-g2-battery-editor", HoymilesBatteryEditor);
   }
-  if (!customElements.get("hoymiles-battery")) {
-    customElements.define("hoymiles-battery", HoymilesBattery);
+  if (!customElements.get("hoymiles-g2-battery")) {
+    customElements.define("hoymiles-g2-battery", HoymilesBattery);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-battery")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-battery")) {
     window.customCards.push({
-      type: "hoymiles-battery",
+      type: "hoymiles-g2-battery",
       name: "Hoymiles Battery",
       description:
         "Battery stack of a Hoymiles micro storage device with per-pack SOC / "

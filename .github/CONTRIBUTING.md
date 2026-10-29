@@ -7,7 +7,7 @@ Home Assistant core and it is not affiliated with Home Assistant.
 ## Ways to contribute
 
 * **Bug reports and feature requests** — open an
-  [issue](https://github.com/hoymiles-ha/ha/issues).
+  [issue](https://github.com/hoymiles-ha/ha_G2/issues).
 * **Code, docs, translations, dashboard cards** — open a pull request.
 
 **You do not need any special permission to open a pull request.** Fork the
@@ -28,14 +28,14 @@ pull request and be approved by a maintainer.
 
 ### Please do not
 
-* **Bump `version` in `custom_components/hoymiles/manifest.json`.** Versions are
+* **Bump `version` in `custom_components/hoymiles_g2/manifest.json`.** Versions are
   bumped by maintainers as part of the release process; a version change in a
   pull request will be reverted.
 * **Add new runtime dependencies.** The integration deliberately depends only on
   Home Assistant itself (`mqtt`, `http`, `frontend`) plus the Python standard
   library.
 * **Load anything from a CDN in the frontend cards.** The cards in
-  `custom_components/hoymiles/www/` must work fully offline, so their
+  `custom_components/hoymiles_g2/www/` must work fully offline, so their
   dependencies have to be committed to this repository.
 * **Reformat or re-wrap unrelated code.** Large drive-by diffs are hard to
   review and will be asked to be split.
@@ -44,10 +44,10 @@ pull request and be approved by a maintainer.
 
 | Path | What it is |
 | --- | --- |
-| `custom_components/hoymiles/` | The integration (Python): `manifest.json`, `config_flow.py`, `coordinator.py`, `services.py`, platform modules. |
-| `custom_components/hoymiles/www/` | Lovelace cards served by the integration (`add_extra_js_url`). |
-| `custom_components/hoymiles/translations/` | `en` + `zh-Hans` UI strings. Keep them in sync with `strings.json`. |
-| `custom_components/hoymiles/brand/` | Brand images (`icon.png` must be 256x256, `logo.png` landscape). |
+| `custom_components/hoymiles_g2/` | The integration (Python): `manifest.json`, `config_flow.py`, `coordinator.py`, `services.py`, platform modules. |
+| `custom_components/hoymiles_g2/www/` | Lovelace cards served by the integration (`add_extra_js_url`). |
+| `custom_components/hoymiles_g2/translations/` | `en` + `zh-Hans` UI strings. Keep them in sync with `strings.json`. |
+| `custom_components/hoymiles_g2/brand/` | Brand images (`icon.png` must be 256x256, `logo.png` landscape). |
 | `docs/` | `CARDS.md` and `ARCHITECTURE.md`, each with a `*.zh-Hans.md` mirror. |
 | `scripts/` | Maintainer tooling (release, brand image generation). |
 | `DEPLOY.md` | Maintainer release / deployment manual. |

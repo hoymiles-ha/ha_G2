@@ -1,6 +1,6 @@
 # 架构说明
 
-`hoymiles` 集成如何与设备通信：话题、固件 discovery 补丁、实体模型与可用性判定。
+`hoymiles_g2` 集成如何与设备通信：话题、固件 discovery 补丁、实体模型与可用性判定。
 
 [English](ARCHITECTURE.md) · **简体中文**
 
@@ -21,7 +21,7 @@
 | `number.py` | 三相输出功率（集成本地实体） |
 | `config_flow.py` | 设备发现与接入 |
 | `options_flow.py` | TOU 配置向导 |
-| `services.py` / `services.yaml` | `hoymiles.*` 服务 |
+| `services.py` / `services.yaml` | `hoymiles_g2.*` 服务 |
 | `strings.json` / `translations/` | 界面文案（`en`、`zh-Hans`） |
 | `brand/` | `icon.png`（256×256）与 `logo.png`（657×256） |
 | `www/` | 八张 Lovelace 卡片（纯 ES module） |
@@ -37,9 +37,9 @@
 | `quick/state` | 扁平 JSON，实时值 | 1 秒 |
 | `device/state` | 嵌套 JSON，变化较慢的值 | 5 分钟 |
 | `system/state` | 系统级值，**仅主机 / 单机发布** | 5 分钟 |
-| `hoymiles/<dev_id>/tou_day_plan/ack` | 日计划应答 | 按需 |
-| `hoymiles/<dev_id>/tou_week_plan/ack` | 周计划应答 | 按需 |
-| `hoymiles/<dev_id>/tou_plan/status` | 当前计划上报 | 按需 |
+| `hoymiles_g2/<dev_id>/tou_day_plan/ack` | 日计划应答 | 按需 |
+| `hoymiles_g2/<dev_id>/tou_week_plan/ack` | 周计划应答 | 按需 |
+| `hoymiles_g2/<dev_id>/tou_plan/status` | 当前计划上报 | 按需 |
 | `homeassistant/+/<dev_id>/config` | 固件自己的 discovery 报文 | 连接时 |
 
 全部依据《禾迈微储 MQTT 协议开发指南 V0.5.1》。
@@ -85,7 +85,7 @@
 > 报文报一次错；日志里看到 `Invalid config for [switch.mqtt]` 但实体正常，属于正常现象。
 > 反之，即使卸载集成，只要固件重连一次就会用自己的报文覆盖回去，**自带自愈**。
 >
-> `availability_topic` 与 `ems_mode` 状态话题都位于 `hoymiles/<dev_id>/…` 命名
+> `availability_topic` 与 `ems_mode` 状态话题都位于 `hoymiles_g2/<dev_id>/…` 命名
 > 空间下，与固件话题不冲突。
 >
 > ⚠️ HA 不会为**已存在**的实体重建订阅：给实体新增 `state_topic` 这类订阅键需要**完整重启**
@@ -121,13 +121,13 @@
 
 所有实体都带可用性判定：`quick/state` 超过 **2 分钟**（或 `device/state`、
 `system/state` 超过 **11 分钟**）没收到推送，集成就会把
-`hoymiles/<dev_id>/availability` 置为 `offline`，**固件 discovery 的实体与集成自己的
+`hoymiles_g2/<dev_id>/availability` 置为 `offline`，**固件 discovery 的实体与集成自己的
 实体会一起转为 `unavailable`**，避免继续展示陈旧值。恢复推送后自动变回 `online`。
 
 ## EMS 模式状态话题
 
 早期固件未提供 `ems_mode` 的 `state_topic`，集成会给它补一个**自维护的 retained 状态
-话题** `hoymiles/<dev_id>/ems_mode/state`：
+话题** `hoymiles_g2/<dev_id>/ems_mode/state`：
 
 - 任何人向 `…/ems_mode/command` 下发后，集成立即回显到该话题 → 界面 / 卡片即时刷新；
 - 同时跟随 `system/state` 里的 `ems_mode`（设备真实运行模式）进行纠正，所以设备侧
@@ -140,7 +140,7 @@
 
 三相限值设备**不会回读**，因此 `Phase A/B/C Output Power` 展示的是「最后一次下发值」
 （跨 HA 重启会通过实体状态恢复）。任一相从未设置过时会回退到协议下限 100 W，
-并打一条 warning；想避免这种情况请用 `hoymiles.set_phase_output_power` 一次设齐三相。
+并打一条 warning；想避免这种情况请用 `hoymiles_g2.set_phase_output_power` 一次设齐三相。
 
 固件自带的 `phase_output_power` 实体被补上 `command_template` 后也能用，语义是
 **一个值同时应用到三相**（固件只接受完整的三相 JSON）。

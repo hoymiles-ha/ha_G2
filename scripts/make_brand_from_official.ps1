@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Produces the two files HACS and HA expect in
-    custom_components/hoymiles/brand/:
+    custom_components/hoymiles_g2/brand/:
 
       icon.png  256x256, square, transparent - the circular mark on its own
       logo.png  horizontal lockup (mark left + wordmark right), transparent
@@ -26,7 +26,7 @@
     Defaults to brand-source.png next to this script.
 
 .PARAMETER OutputDir
-    Destination directory. Defaults to custom_components/hoymiles/brand.
+    Destination directory. Defaults to custom_components/hoymiles_g2/brand.
 
 .PARAMETER IconSize
     Side length of icon.png. Default 256 (what Home Assistant expects).
@@ -65,7 +65,7 @@ function Fail([string]$Message) {
 $repoRoot = Split-Path -Parent $PSScriptRoot
 
 if (-not $OutputDir) {
-    $OutputDir = Join-Path $repoRoot "custom_components\hoymiles\brand"
+    $OutputDir = Join-Path $repoRoot "custom_components\hoymiles_g2\brand"
 }
 if (-not $InputImage) {
     # The design source lives next to this script so it is never shipped to

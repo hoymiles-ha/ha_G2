@@ -1,4 +1,4 @@
-# Hoymiles Official · Home Assistant 集成
+# Hoymiles MS-G2 · Home Assistant 集成
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2023.8%2B-41BDF5.svg)](https://www.home-assistant.io)
@@ -65,7 +65,7 @@
 ### 方式 A：HACS（推荐）
 
 1. 打开 **HACS → 集成**
-2. 搜索 **Hoymiles Official** → **下载**
+2. 搜索 **Hoymiles MS-G2** → **下载**
 3. **完整重启 Home Assistant Core**（不是「重载配置项」）
 
 > 为什么必须完整重启：新下载的 Python 模块需要重新 import，
@@ -73,15 +73,15 @@
 
 > 如果暂时搜不到（HACS 会缓存目录，最长 48 小时才刷新），先按自定义存储库
 > 添加一次：**HACS → 集成 → 右上角 ⋮ → 自定义存储库**，
-> 仓库地址填 `https://github.com/hoymiles-ha/ha`，类别选 **Integration**，
-> 然后搜索 **Hoymiles Official** → **下载**。
+> 仓库地址填 `https://github.com/hoymiles-ha/ha_G2`，类别选 **Integration**，
+> 然后搜索 **Hoymiles MS-G2** → **下载**。
 
 ### 方式 B：手动安装
 
-把 `custom_components/hoymiles/` 整个目录拷贝到 Home Assistant 配置目录：
+把 `custom_components/hoymiles_g2/` 整个目录拷贝到 Home Assistant 配置目录：
 
 ```
-/config/custom_components/hoymiles/
+/config/custom_components/hoymiles_g2/
 ```
 
 然后**完整重启** Home Assistant。
@@ -90,7 +90,7 @@
 
 - **HAOS / Supervised** —— 装 Samba share 或 SSH add-on，访问
   `\\<host>\config\custom_components\`
-- **HA Core / Docker** —— `cp -r hoymiles /config/custom_components/` 或 `docker cp`
+- **HA Core / Docker** —— `cp -r hoymiles_g2 /config/custom_components/` 或 `docker cp`
 
 ### 前置条件
 
@@ -102,7 +102,7 @@
 
 ## 添加设备
 
-**设置 → 设备与服务 → 添加集成 → 搜索 `Hoymiles Official`。**
+**设置 → 设备与服务 → 添加集成 → 搜索 `Hoymiles MS-G2`。**
 
 集成会自动扫描 retained 的 `homeassistant/switch/+/config` 主题，把发现的设备列在下拉框
 里，通常直接选一个就行；也可以手动输入 `dev_id`（例如 `MSA-280520260806`）。
@@ -118,30 +118,30 @@
 ```yaml
 type: vertical-stack
 cards:
-  - type: custom:hoymiles-power-flow
+  - type: custom:hoymiles-g2-power-flow
     dev_id: MSA-280520260806
 
-  - type: custom:hoymiles-battery
+  - type: custom:hoymiles-g2-battery
     dev_id: MSA-280520260806
 
   - type: grid
     columns: 3
     square: false
     cards:
-      - type: custom:hoymiles-gauge
+      - type: custom:hoymiles-g2-gauge
         entity: sensor.msa_280520260806_system_pv_energy_today
         name: 今日发电量
         unit: kWh
         scale: 0.001
         icon: ☀️
         max: 10
-      - type: custom:hoymiles-gauge
+      - type: custom:hoymiles-g2-gauge
         entity: sensor.msa_280520260806_battery_discharge_energy_today
         name: 今日放电量
         unit: kWh
         scale: 0.001
         icon: 🔋
-      - type: custom:hoymiles-gauge
+      - type: custom:hoymiles-g2-gauge
         entity: sensor.msa_280520260806_battery_charge_energy_today
         name: 今日充电量
         unit: kWh
@@ -157,7 +157,7 @@ cards:
 
 - **原生向导** —— 设备卡片 → **配置** → *编辑日计划* / *编辑周计划* /
   *获取当前计划* / *设置 EMS 模式* / *重启设备*
-- **卡片** —— `type: custom:hoymiles-tou-editor`。卡片只有在 EMS 模式为 `tou_plan`
+- **卡片** —— `type: custom:hoymiles-g2-tou-editor`。卡片只有在 EMS 模式为 `tou_plan`
   时才渲染编辑界面，`require_tou_mode: false` 可以关掉该门控。
 
 ---
@@ -166,14 +166,14 @@ cards:
 
 | 卡片 | 作用 |
 |---|---|
-| `custom:hoymiles-power-flow` | 接线示意图，叠加光伏1 / 光伏2 / 电网 / 负载 / 智能插座 / 微储实时功率与流动动画 |
-| `custom:hoymiles-battery` | 按**实际电池包数量**（1~4）自适应的电池堆，逐包 SOC 与温度，以及主机温度和头部状态显示条 |
-| `custom:hoymiles-pack-list` | 紧凑电池包列表 —— SOC 进度条、温度、加热标记 |
-| `custom:hoymiles-history-chart` | 日 / 月 / 年曲线 + 日期导航，读取长期统计 |
-| `custom:hoymiles-gauge` | 单值仪表盘，支持量程换挡（如 Wh → kWh） |
-| `custom:hoymiles-control` | 开关机 / EMS 模式 / 功率 / 多相输出 / 取计划 / 重启 |
-| `custom:hoymiles-tou-editor` | 分时计划可视化编辑器 |
-| `custom:hoymiles-energy-sankey` | 能量流桑基图，读取长期统计 |
+| `custom:hoymiles-g2-power-flow` | 接线示意图，叠加光伏1 / 光伏2 / 电网 / 负载 / 智能插座 / 微储实时功率与流动动画 |
+| `custom:hoymiles-g2-battery` | 按**实际电池包数量**（1~4）自适应的电池堆，逐包 SOC 与温度，以及主机温度和头部状态显示条 |
+| `custom:hoymiles-g2-pack-list` | 紧凑电池包列表 —— SOC 进度条、温度、加热标记 |
+| `custom:hoymiles-g2-history-chart` | 日 / 月 / 年曲线 + 日期导航，读取长期统计 |
+| `custom:hoymiles-g2-gauge` | 单值仪表盘，支持量程换挡（如 Wh → kWh） |
+| `custom:hoymiles-g2-control` | 开关机 / EMS 模式 / 功率 / 多相输出 / 取计划 / 重启 |
+| `custom:hoymiles-g2-tou-editor` | 分时计划可视化编辑器 |
+| `custom:hoymiles-g2-energy-sankey` | 能量流桑基图，读取长期统计 |
 
 每张卡片都以 `ha-card` 为根、自绘 SVG，不依赖 CDN。
 
@@ -187,12 +187,12 @@ cards:
 
 | 服务 | 说明 |
 |---|---|
-| `hoymiles.set_tou_day_plan` | 下发 `day1`…`day8` 中某一天的日计划 |
-| `hoymiles.set_tou_week_plan` | 下发「星期 → 日计划」映射 |
-| `hoymiles.get_tou_plan` | 查询设备当前计划 |
-| `hoymiles.set_ems_mode` | 切换 EMS 模式（`general` / `mqtt_ctrl` / `tou_plan`） |
-| `hoymiles.set_phase_output_power` | 一次性设置 A/B/C 三相输出功率限值 |
-| `hoymiles.reboot` | 重启设备 |
+| `hoymiles_g2.set_tou_day_plan` | 下发 `day1`…`day8` 中某一天的日计划 |
+| `hoymiles_g2.set_tou_week_plan` | 下发「星期 → 日计划」映射 |
+| `hoymiles_g2.get_tou_plan` | 查询设备当前计划 |
+| `hoymiles_g2.set_ems_mode` | 切换 EMS 模式（`general` / `mqtt_ctrl` / `tou_plan`） |
+| `hoymiles_g2.set_phase_output_power` | 一次性设置 A/B/C 三相输出功率限值 |
+| `hoymiles_g2.reboot` | 重启设备 |
 
 目标设备二选一：
 
@@ -200,7 +200,7 @@ cards:
 - `dev_id` —— 直接填设备标识字符串，如 `MSA-280520260806`
 
 ```yaml
-service: hoymiles.set_tou_day_plan
+service: hoymiles_g2.set_tou_day_plan
 data:
   dev_id: MSA-280520260806
   day_idx: 1
@@ -253,7 +253,7 @@ data:
 | 添加集成时列表为空 | 确认 MQTT 集成已配置、Broker 地址一致；设备需已连接并发过 retained discovery |
 | 实体一直 `unknown` | 确认 `dev_id` 大小写与 topic 完全一致；`system/state` 仅在主机 / 单机发布 |
 | 卡片找不到 | 集成启动后会自动注入前端模块；若浏览器缓存旧版请强制刷新 |
-| 下发 TOU 报 `10` | 表示设备当前不是 `tou_plan` 模式，先调用 `hoymiles.set_ems_mode` |
+| 下发 TOU 报 `10` | 表示设备当前不是 `tou_plan` 模式，先调用 `hoymiles_g2.set_ems_mode` |
 | 日志报 `Invalid config for [switch.mqtt]` | 固件重连时先发了自己的旧报文，集成会在毫秒内补上；实体正常则无需理会 |
 | 日志报 `mode: textarea` 或 `does not generate unique IDs` | 前者是本集成会自动清理的旧固件遗留（升级后应消失）；后者是旧固件把多个 config 的 `unique_id` 写成同一个值，**只影响未被本集成管理的设备**，需升级固件消除 |
 | 开关状态显示 `unknown` | 已按设计改为乐观实体，只能反映本集成下发的状态（设备无开关状态回读） |
@@ -277,7 +277,7 @@ hoymiles-ha/
 │   ├── CARDS.md                  卡片参数总表
 │   └── ARCHITECTURE.md           MQTT 话题、discovery 补丁、实体模型
 ├── scripts/                      品牌图生成脚本
-└── custom_components/hoymiles/
+└── custom_components/hoymiles_g2/
     ├── __init__.py               入口 / 前端资源注册
     ├── manifest.json
     ├── const.py                  topic 模板、常量、应答状态码
@@ -289,7 +289,7 @@ hoymiles-ha/
     ├── number.py                 三相输出功率
     ├── config_flow.py            设备发现与接入
     ├── options_flow.py           TOU 配置向导
-    ├── services.py               hoymiles.* 服务
+    ├── services.py               hoymiles_g2.* 服务
     ├── services.yaml
     ├── strings.json
     ├── translations/             en / zh-Hans

@@ -1,7 +1,7 @@
 /* ============================================================================
  * Hoymiles Micro Storage — Control panel card
  * ----------------------------------------------------------------------------
- * Lovelace card: `custom:hoymiles-control`
+ * Lovelace card: `custom:hoymiles-g2-control`
  *
  * Every command from《禾迈微储MQTT协议开发指南》V0.5.1, as buttons / inputs:
  *
@@ -22,7 +22,7 @@
  * from the matching entities when they exist.
  *
  * Card config:
- *   type: custom:hoymiles-control
+ *   type: custom:hoymiles-g2-control
  *   dev_id: MSA-280520260806
  *   language: en                # optional (en|zh); omit to follow Home Assistant
  *   title: Device control
@@ -127,12 +127,12 @@ function _hmControlRegister() {
    * single stream carries both directions:
    *
    *   homeassistant/<component>/<dev_id>/...   firmware + integration topics
-   *   hoymiles/<dev_id>/...                    integration bookkeeping
+   *   hoymiles_g2/<dev_id>/...                    integration bookkeeping
    *                                            (availability, EMS mode echo)
    *
    * Direction is read off the topic: Home Assistant writes to the command side
    * (`/set`, `/command`, `/trigger`, `/get`), the device publishes everything
-   * else. The `hoymiles/` family is the integration's own, so it counts as
+   * else. The `hoymiles_g2/` family is the integration's own, so it counts as
    * downlink too. This is a heuristic, but a topic cannot be told apart from
    * its payload, and the alternative (hard-coding every topic of the protocol)
    * would silently miss new ones.
@@ -219,7 +219,7 @@ function _hmControlRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-control-editor");
+      return document.createElement("hoymiles-g2-control-editor");
     }
 
     static getStubConfig() {
@@ -439,7 +439,7 @@ function _hmControlRegister() {
 
     setConfig(config) {
       if (!config || !config.dev_id) {
-        throw new Error("hoymiles-control: 'dev_id' is required");
+        throw new Error("hoymiles-g2-control: 'dev_id' is required");
       }
       const changed = this._config && this._config.dev_id !== config.dev_id;
       this._config = { ...config };
@@ -500,7 +500,7 @@ function _hmControlRegister() {
      * Resolve an entity by protocol key.
      *
      * The firmware's MQTT discovery uses `<dev_id>_<key>` unique ids, while the
-     * integration's own entities use `hoymiles_<dev_id>_<key>`; entity ids are
+     * integration's own entities use `hoymiles_g2_<dev_id>_<key>`; entity ids are
      * slugified from the *name*, so they are matched normalized.
      */
     _resolve(key, domain = "number") {
@@ -517,7 +517,7 @@ function _hmControlRegister() {
       let found = null;
       const wantUid = new Set([
         `${this._dev()}_${key}`,
-        `hoymiles_${this._dev()}_${key}`,
+        `hoymiles_g2_${this._dev()}_${key}`,
       ]);
       for (const [entityId, entry] of Object.entries(hass.entities || {})) {
         if (!entry || !entityId.startsWith(`${domain}.`)) continue;
@@ -843,17 +843,17 @@ function _hmControlRegister() {
 
     /** The two wildcards that cover this device: its tree, and ours. */
     _logTopics() {
-      return [this._topic("+/<dev_id>/#"), `hoymiles/${this._dev()}/#`];
+      return [this._topic("+/<dev_id>/#"), `hoymiles_g2/${this._dev()}/#`];
     }
 
     /**
      * Which way does a message go? Home Assistant writes to the command side of
      * a topic (`/set`, `/command`, `/trigger`, `/get`); everything else on the
-     * device's tree is published by the device itself. The `hoymiles/` family
+     * device's tree is published by the device itself. The `hoymiles_g2/` family
      * belongs to the integration, which is also this end of the link.
      */
     _logDown(topic) {
-      if (String(topic).startsWith("hoymiles/")) return true;
+      if (String(topic).startsWith("hoymiles_g2/")) return true;
       return LOG_DOWNLINK.test(String(topic));
     }
 
@@ -1562,17 +1562,17 @@ function _hmControlRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-control-editor")) {
-    customElements.define("hoymiles-control-editor", HoymilesControlEditor);
+  if (!customElements.get("hoymiles-g2-control-editor")) {
+    customElements.define("hoymiles-g2-control-editor", HoymilesControlEditor);
   }
-  if (!customElements.get("hoymiles-control")) {
-    customElements.define("hoymiles-control", HoymilesControl);
+  if (!customElements.get("hoymiles-g2-control")) {
+    customElements.define("hoymiles-g2-control", HoymilesControl);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-control")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-control")) {
     window.customCards.push({
-      type: "hoymiles-control",
+      type: "hoymiles-g2-control",
       name: "Hoymiles Control",
       description:
         "Buttons and inputs for every control topic of the Hoymiles micro storage "

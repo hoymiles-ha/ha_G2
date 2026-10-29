@@ -1,4 +1,4 @@
-# Hoymiles Official for Home Assistant
+# Hoymiles MS-G2 for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2023.8%2B-41BDF5.svg)](https://www.home-assistant.io)
@@ -72,7 +72,7 @@ that mirror the layout of the Hoymiles app.
 ### Option A — HACS (recommended)
 
 1. Open **HACS → Integrations**
-2. Search for **Hoymiles Official** and click **Download**
+2. Search for **Hoymiles MS-G2** and click **Download**
 3. **Restart Home Assistant Core completely** (not just "Reload config entry")
 
 > Why a full restart: the newly downloaded Python modules have to be re-imported.
@@ -81,16 +81,16 @@ that mirror the layout of the Hoymiles app.
 > If the search does not find it yet (HACS caches the catalog and only refreshes
 > every 48 hours), add it once as a custom repository:
 > **HACS → Integrations → ⋮ (top right) → Custom repositories**,
-> repository `https://github.com/hoymiles-ha/ha`, category **Integration**, then
-> search for **Hoymiles Official** and click **Download**.
+> repository `https://github.com/hoymiles-ha/ha_G2`, category **Integration**, then
+> search for **Hoymiles MS-G2** and click **Download**.
 
 ### Option B — Manual
 
-Copy the whole `custom_components/hoymiles/` folder into your Home Assistant
+Copy the whole `custom_components/hoymiles_g2/` folder into your Home Assistant
 configuration directory:
 
 ```
-/config/custom_components/hoymiles/
+/config/custom_components/hoymiles_g2/
 ```
 
 Then **restart Home Assistant completely**.
@@ -99,7 +99,7 @@ Typical ways to get the files onto a Raspberry Pi / HAOS box:
 
 - **HAOS / Supervised** — install the Samba share or SSH add-on and browse to
   `\\<host>\config\custom_components\`
-- **HA Core / Docker** — `cp -r hoymiles /config/custom_components/` or `docker cp`
+- **HA Core / Docker** — `cp -r hoymiles_g2 /config/custom_components/` or `docker cp`
 
 ### Prerequisites
 
@@ -111,7 +111,7 @@ Typical ways to get the files onto a Raspberry Pi / HAOS box:
 
 ## Adding your device
 
-**Settings → Devices & Services → Add Integration → search "Hoymiles Official".**
+**Settings → Devices & Services → Add Integration → search "Hoymiles MS-G2".**
 
 The integration scans retained `homeassistant/switch/+/config` topics and lists every
 device it finds in a dropdown, so you normally just pick one. You can also type the
@@ -128,30 +128,30 @@ Once the device is added you get entities plus eight cards. A minimal dashboard:
 ```yaml
 type: vertical-stack
 cards:
-  - type: custom:hoymiles-power-flow
+  - type: custom:hoymiles-g2-power-flow
     dev_id: MSA-280520260806
 
-  - type: custom:hoymiles-battery
+  - type: custom:hoymiles-g2-battery
     dev_id: MSA-280520260806
 
   - type: grid
     columns: 3
     square: false
     cards:
-      - type: custom:hoymiles-gauge
+      - type: custom:hoymiles-g2-gauge
         entity: sensor.msa_280520260806_system_pv_energy_today
         name: PV today
         unit: kWh
         scale: 0.001
         icon: ☀️
         max: 10
-      - type: custom:hoymiles-gauge
+      - type: custom:hoymiles-g2-gauge
         entity: sensor.msa_280520260806_battery_discharge_energy_today
         name: Discharged
         unit: kWh
         scale: 0.001
         icon: 🔋
-      - type: custom:hoymiles-gauge
+      - type: custom:hoymiles-g2-gauge
         entity: sensor.msa_280520260806_battery_charge_energy_today
         name: Charged
         unit: kWh
@@ -168,7 +168,7 @@ Configuring a TOU plan, either way works:
 
 - **Native wizard** — device card → **Configure** → *Edit day plan* / *Edit week plan* /
   *Get current plan* / *Set EMS mode* / *Reboot device*
-- **Card** — `type: custom:hoymiles-tou-editor`. It only renders the editor while EMS
+- **Card** — `type: custom:hoymiles-g2-tou-editor`. It only renders the editor while EMS
   mode is `tou_plan`; set `require_tou_mode: false` to disable that gate.
 
 ---
@@ -177,14 +177,14 @@ Configuring a TOU plan, either way works:
 
 | Card | What it does |
 |---|---|
-| `custom:hoymiles-power-flow` | Wiring schematic of PV1 / PV2 / grid / load / smart plug / storage with live power and animated flow |
-| `custom:hoymiles-battery` | Battery stack drawn to match the *actual* pack count (1–4), with per-pack SOC & temperature, the host temperature and the head status display |
-| `custom:hoymiles-pack-list` | Compact pack list — SOC bar, temperature, heating flag |
-| `custom:hoymiles-history-chart` | Day / month / year curves with date navigation, reads long-term statistics |
-| `custom:hoymiles-gauge` | Single-value gauge with range switching (e.g. Wh → kWh) |
-| `custom:hoymiles-control` | On/off, EMS mode, power, per-phase output, TOU fetch, reboot |
-| `custom:hoymiles-tou-editor` | Visual TOU plan editor |
-| `custom:hoymiles-energy-sankey` | Energy-flow sankey built from long-term statistics |
+| `custom:hoymiles-g2-power-flow` | Wiring schematic of PV1 / PV2 / grid / load / smart plug / storage with live power and animated flow |
+| `custom:hoymiles-g2-battery` | Battery stack drawn to match the *actual* pack count (1–4), with per-pack SOC & temperature, the host temperature and the head status display |
+| `custom:hoymiles-g2-pack-list` | Compact pack list — SOC bar, temperature, heating flag |
+| `custom:hoymiles-g2-history-chart` | Day / month / year curves with date navigation, reads long-term statistics |
+| `custom:hoymiles-g2-gauge` | Single-value gauge with range switching (e.g. Wh → kWh) |
+| `custom:hoymiles-g2-control` | On/off, EMS mode, power, per-phase output, TOU fetch, reboot |
+| `custom:hoymiles-g2-tou-editor` | Visual TOU plan editor |
+| `custom:hoymiles-g2-energy-sankey` | Energy-flow sankey built from long-term statistics |
 
 Each card is rooted at `ha-card`, is self-drawn SVG, and needs no CDN.
 
@@ -199,12 +199,12 @@ Each card is rooted at `ha-card`, is self-drawn SVG, and needs no CDN.
 
 | Service | Purpose |
 |---|---|
-| `hoymiles.set_tou_day_plan` | Push the day plan for one of `day1`…`day8` |
-| `hoymiles.set_tou_week_plan` | Map weekdays to day plans |
-| `hoymiles.get_tou_plan` | Query the device's current plan |
-| `hoymiles.set_ems_mode` | Switch EMS mode (`general` / `mqtt_ctrl` / `tou_plan`) |
-| `hoymiles.set_phase_output_power` | Set A/B/C phase output limits in one call |
-| `hoymiles.reboot` | Restart the device |
+| `hoymiles_g2.set_tou_day_plan` | Push the day plan for one of `day1`…`day8` |
+| `hoymiles_g2.set_tou_week_plan` | Map weekdays to day plans |
+| `hoymiles_g2.get_tou_plan` | Query the device's current plan |
+| `hoymiles_g2.set_ems_mode` | Switch EMS mode (`general` / `mqtt_ctrl` / `tou_plan`) |
+| `hoymiles_g2.set_phase_output_power` | Set A/B/C phase output limits in one call |
+| `hoymiles_g2.reboot` | Restart the device |
 
 Target the device with **one** of:
 
@@ -212,7 +212,7 @@ Target the device with **one** of:
 - `dev_id` — the identifier string, e.g. `MSA-280520260806`
 
 ```yaml
-service: hoymiles.set_tou_day_plan
+service: hoymiles_g2.set_tou_day_plan
 data:
   dev_id: MSA-280520260806
   day_idx: 1
@@ -267,7 +267,7 @@ Manual installs are **not** upgraded automatically — copy the files again and 
 | No devices listed when adding the integration | Check the MQTT integration is configured and points at the same broker; the device must have connected and sent its retained discovery |
 | Entities stay `unknown` | Confirm the `dev_id` case matches the topics exactly; `system/state` is published by master / standalone units only |
 | Card not found | The integration injects the frontend module at startup — hard-refresh the browser if you see a stale version |
-| TOU write returns `10` | The device is not in `tou_plan` mode. Call `hoymiles.set_ems_mode` first |
+| TOU write returns `10` | The device is not in `tou_plan` mode. Call `hoymiles_g2.set_ems_mode` first |
 | Log: `Invalid config for [switch.mqtt]` | The firmware republished its own outdated payload on reconnect; the patch lands milliseconds later. Harmless if the entity works |
 | Log: `mode: textarea` / `does not generate unique IDs` | The first is a stale firmware leftover that this integration cleans up automatically; the second affects devices this integration does not manage and needs a firmware update |
 | Switch state shows `unknown` | By design — the entity is optimistic because the hardware has no readable on/off state |
@@ -292,7 +292,7 @@ hoymiles-ha/
 │   ├── CARDS.md                  full card option reference
 │   └── ARCHITECTURE.md           MQTT topics, discovery patches, entity model
 ├── scripts/                      brand artwork generator
-└── custom_components/hoymiles/
+└── custom_components/hoymiles_g2/
     ├── __init__.py               entry point / frontend asset registration
     ├── manifest.json
     ├── const.py                  topic templates, constants, reply codes
@@ -304,7 +304,7 @@ hoymiles-ha/
     ├── number.py                 per-phase output power
     ├── config_flow.py            device discovery & setup
     ├── options_flow.py           TOU configuration wizard
-    ├── services.py               hoymiles.* services
+    ├── services.py               hoymiles_g2.* services
     ├── services.yaml
     ├── strings.json
     ├── translations/             en / zh-Hans

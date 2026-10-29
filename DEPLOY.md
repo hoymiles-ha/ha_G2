@@ -8,7 +8,7 @@
 4. [在 GitHub 更新文件后，用户在 HA 上应用新版本](#4-更新文件后如何在-ha-上应用新版本)
 
 > 终端命令以 PowerShell 为例，路径按需替换。
-> 文中仓库地址统一用 `hoymiles-ha/ha`，如换成别的仓库请同步修改
+> 文中仓库地址统一用 `hoymiles-ha/ha_G2`，如换成别的仓库请同步修改
 > [三处 URL](#仓库-url-出现在哪三处)。
 
 ---
@@ -40,20 +40,20 @@
 │   ├── make_brand_from_image.ps1     # 备用：从截图/图片抠底生成
 │   └── release.ps1                   # 一键发版
 └── custom_components/                # HACS 必需：集成目录
-    └── hoymiles/
+    └── hoymiles_g2/
         ├── brand/
         │   ├── icon.png              # HACS 品牌校验必需；本地图标可免去上游 PR
         │   └── logo.png              # 横向锁定版：圆标 + 字标
         ├── manifest.json             # 必需，含 version（HACS 硬性要求）
         ├── www/                      # 八张 Lovelace 卡片
-        │   ├── hoymiles-power-flow.js
-        │   ├── hoymiles-battery.js
-        │   ├── hoymiles-pack-list.js
-        │   ├── hoymiles-history-chart.js
-        │   ├── hoymiles-gauge.js
-        │   ├── hoymiles-control.js
-        │   ├── hoymiles-tou-editor.js
-        │   └── hoymiles-energy-sankey.js
+        │   ├── hoymiles-g2-power-flow.js
+        │   ├── hoymiles-g2-battery.js
+        │   ├── hoymiles-g2-pack-list.js
+        │   ├── hoymiles-g2-history-chart.js
+        │   ├── hoymiles-g2-gauge.js
+        │   ├── hoymiles-g2-control.js
+        │   ├── hoymiles-g2-tou-editor.js
+        │   └── hoymiles-g2-energy-sankey.js
         └── ... (config_flow / sensor / services ...)
 ```
 
@@ -66,7 +66,7 @@ powershell -ExecutionPolicy Bypass -File scripts\make_brand_from_official.ps1
 ```
 
 - 输入：`scripts/brand-source.png`（官方 logo 原始稿：蓝色实心圆 + 白色 H，下方 "Hoymiles" 字标）
-- 输出：`custom_components/hoymiles/brand/icon.png`（256×256，圆形标记）
+- 输出：`custom_components/hoymiles_g2/brand/icon.png`（256×256，圆形标记）
   与 `logo.png`（横向锁定版，圆标在左 + 字标在右）
 - 脚本自带规格自检，不达标会直接报错
 - 品牌蓝为 `#0303D8`
@@ -81,8 +81,8 @@ powershell -ExecutionPolicy Bypass -File scripts\make_brand_from_official.ps1
 ```powershell
 cd <repo root>
 foreach ($f in @("LICENSE","README.md","hacs.json",".gitignore",
-                 "custom_components\hoymiles\manifest.json",
-                 "custom_components\hoymiles\brand\icon.png")) {
+                 "custom_components\hoymiles_g2\manifest.json",
+                 "custom_components\hoymiles_g2\brand\icon.png")) {
     "{0,-52} {1}" -f $f, (Test-Path $f)
 }
 ```
@@ -93,7 +93,7 @@ foreach ($f in @("LICENSE","README.md","hacs.json",".gitignore",
 
 | 文件 | 字段 |
 |---|---|
-| `custom_components/hoymiles/manifest.json` | `codeowners`、`documentation`、`issue_tracker` |
+| `custom_components/hoymiles_g2/manifest.json` | `codeowners`、`documentation`、`issue_tracker` |
 | `README.md` / `README.zh-Hans.md` | 安装说明里的仓库地址 |
 | `DEPLOY.md`（本文件） | 命令示例 |
 
@@ -105,7 +105,7 @@ foreach ($f in @("LICENSE","README.md","hacs.json",".gitignore",
 
 ### 1.1 创建仓库
 
-在 https://github.com/new 新建一个 **public** 仓库，例如 `hoymiles-ha/ha`。
+在 https://github.com/new 新建一个 **public** 仓库，例如 `hoymiles-ha/ha_G2`。
 
 - 建议勾选 **Add a README file = 否**（我们本地已有 README，避免冲突）
 - 必须 **public**：HACS 通过 GitHub API 拉取，私有仓库需要额外配 token
@@ -119,7 +119,7 @@ git init -b main
 git add .
 git commit -m "Initial release 0.1.0"
 
-git remote add origin https://github.com/hoymiles-ha/ha.git
+git remote add origin https://github.com/hoymiles-ha/ha_G2.git
 git push -u origin main
 ```
 
@@ -166,7 +166,7 @@ HACS 一共 9 项检查，常见拦截原因：
 | 检查 | 常见失败原因 |
 |---|---|
 | `license` | 没有 `LICENSE`，或用非 OSI 协议（`NOASSERTION` 会失败） |
-| `brands` | 既没有 `custom_components/hoymiles/brand/icon.png`，也不在 `home-assistant/brands` |
+| `brands` | 既没有 `custom_components/hoymiles_g2/brand/icon.png`，也不在 `home-assistant/brands` |
 | `hacsjson` | `hacs.json` 出现**未知键**（schema 是 `PREVENT_EXTRA`） |
 | `integration_manifest` | `manifest.json` 缺 `codeowners`/`documentation`/`issue_tracker`/`version`，或 URL 为空 |
 | `description` / `topics` | GitHub 仓库的 Description / Topics 为空 |
@@ -189,13 +189,13 @@ HACS 一共 9 项检查，常见拦截原因：
 2. 切到 **集成** 分类
 3. 右上角 **⋮** → **自定义存储库**
 4. 填写：
-   - **存储库**：`https://github.com/hoymiles-ha/ha`
+   - **存储库**：`https://github.com/hoymiles-ha/ha_G2`
    - **类别**：**Integration**
 5. 点 **添加**
 
 ### 2.3 下载并重启
 
-1. 在 HACS 集成列表里搜索 **Hoymiles Official**
+1. 在 HACS 集成列表里搜索 **Hoymiles MS-G2**
 2. 点进去 → **下载** → 选版本（默认最新 Release）→ **下载**
 3. **完整重启 Home Assistant Core**
    （设置 → 系统 → 右上角电源 → 重启 Home Assistant）
@@ -207,7 +207,7 @@ HACS 一共 9 项检查，常见拦截原因：
 不装 HACS 也可以，把集成目录拷过去再重启：
 
 ```
-/config/custom_components/hoymiles/
+/config/custom_components/hoymiles_g2/
 ```
 
 树莓派/HAOS 常用做法：**Samba share** 或 **SSH & Web Terminal** add-on；
@@ -222,7 +222,7 @@ Docker/Core：`docker cp` 或直接 `cp -r`。
 ### 3.1 添加集成（生成设备与实体）
 
 1. **设置 → 设备与服务 → 添加集成**
-2. 搜索 **Hoymiles Official**
+2. 搜索 **Hoymiles MS-G2**
 3. 集成把发现的设备列进下拉框
    - 也可以直接手输 `dev_id`，形如 `MSA-280520260806`（= `client_prefix-SN`）
 4. 选中 → 提交
@@ -266,11 +266,11 @@ Docker/Core：`docker cp` 或直接 `cp -r`。
 
 | 服务 | 说明 |
 |---|---|
-| `hoymiles.set_tou_day_plan` | 下发某天日计划 |
-| `hoymiles.set_tou_week_plan` | 下发星期与日计划映射 |
-| `hoymiles.get_tou_plan` | 查询某天计划 |
-| `hoymiles.set_ems_mode` | 切换 EMS 模式 |
-| `hoymiles.reboot` | 重启设备 |
+| `hoymiles_g2.set_tou_day_plan` | 下发某天日计划 |
+| `hoymiles_g2.set_tou_week_plan` | 下发星期与日计划映射 |
+| `hoymiles_g2.get_tou_plan` | 查询某天计划 |
+| `hoymiles_g2.set_ems_mode` | 切换 EMS 模式 |
+| `hoymiles_g2.reboot` | 重启设备 |
 
 **目标设备二选一：**
 
@@ -285,12 +285,12 @@ Docker/Core：`docker cp` 或直接 `cp -r`。
 
 ```yaml
 # 方式一：用设备下拉（推荐）
-service: hoymiles.reboot
+service: hoymiles_g2.reboot
 data:
   device_id: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
 
 # 方式二：用设备标识
-service: hoymiles.reboot
+service: hoymiles_g2.reboot
 data:
   dev_id: MSA-280520260806
 ```
@@ -304,7 +304,7 @@ data:
 #### 卡片 A：TOU 计划编辑器
 
 ```yaml
-type: custom:hoymiles-tou-editor
+type: custom:hoymiles-g2-tou-editor
 dev_id: MSA-280520260806
 language: zh
 ```
@@ -314,7 +314,7 @@ language: zh
 #### 卡片 B：能量流桑基图
 
 ```yaml
-type: custom:hoymiles-energy-sankey
+type: custom:hoymiles-g2-energy-sankey
 dev_id: MSA-280520260806
 title: 能量流
 language: zh
@@ -332,7 +332,7 @@ range: today          # today | 7d | 30d | month
 `statistics` 覆盖示例（实体被改名或想改用 `*_total` 累计口径时很有用）：
 
 ```yaml
-type: custom:hoymiles-energy-sankey
+type: custom:hoymiles-g2-energy-sankey
 dev_id: MSA-280520260806
 range: 30d
 statistics:
@@ -358,8 +358,8 @@ statistics:
 **验证卡片已注册**：浏览器控制台执行
 
 ```js
-customElements.get('hoymiles-tou-editor')          // -> 构造函数
-customElements.get('hoymiles-energy-sankey')       // -> 构造函数
+customElements.get('hoymiles-g2-tou-editor')          // -> 构造函数
+customElements.get('hoymiles-g2-energy-sankey')       // -> 构造函数
 ```
 
 ### 3.5 （可选）让官方能源仪表盘也出图
@@ -436,7 +436,7 @@ HACS 的检查周期是**硬编码**的（`hacs/integration` 的 `base.py` → `
 
 ### 4.3 用户侧的更新步骤（2 次点击）
 
-1. HACS → 集成 → 找到 **Hoymiles Official** → **更新**
+1. HACS → 集成 → 找到 **Hoymiles MS-G2** → **更新**
 2. 提示重启时点 **重启 Home Assistant**（**必须完整重启**，不是 reload entry）
 
 ### 4.4 想立刻检查（不等 48 小时）的三种办法
@@ -475,7 +475,7 @@ actions:
 
 ### 4.6 手动安装的用户怎么更新
 
-把新的 `custom_components/hoymiles/` 覆盖过去，然后**完整重启 HA**。
+把新的 `custom_components/hoymiles_g2/` 覆盖过去，然后**完整重启 HA**。
 没有 HACS 就没有版本提示，需要自己关注仓库。
 
 ### 4.7 固件与集成的耦合（**重要**）
@@ -506,7 +506,7 @@ actions:
 | 提示无可用版本 | 没打 tag / 没发 Release |
 | `hacs.json` 校验失败 | 出现了未知键（schema 是 `PREVENT_EXTRA`） |
 | 集成校验失败 | `manifest.json` 缺 `codeowners`/`documentation`/`issue_tracker`/`version`，或 URL 为空 |
-| CI `brands` 失败 | 缺 `custom_components/hoymiles/brand/icon.png` 且不在 `home-assistant/brands` |
+| CI `brands` 失败 | 缺 `custom_components/hoymiles_g2/brand/icon.png` 且不在 `home-assistant/brands` |
 
 本地重新生成图标：
 
@@ -517,8 +517,8 @@ powershell -ExecutionPolicy Bypass -File scripts\make_brand_icon.ps1
 ### 5.2 集成装了但不出现
 
 1. **是否完整重启过 HA Core？** 只 reload entry 不够
-2. 检查 `/config/custom_components/hoymiles/manifest.json` 是否存在
-3. 直接在「添加集成」里搜 `Hoymiles Official`
+2. 检查 `/config/custom_components/hoymiles_g2/manifest.json` 是否存在
+3. 直接在「添加集成」里搜 `Hoymiles MS-G2`
    （`manifest/list` WS 命令**看不到未加载的自定义集成**，别用它判断）
 
 ### 5.3 添加集成时下拉框是空的
@@ -547,8 +547,8 @@ powershell -ExecutionPolicy Bypass -File scripts\make_brand_icon.ps1
 **处理：更新到含该修复的版本。**
 
 - HACS 安装：HACS → 集成 → 更新 → **完整重启 HA Core**
-- 手动安装：覆盖 `custom_components/hoymiles/` → **完整重启 HA Core**
-- 临时绕过：直接把 HA 上 `custom_components/hoymiles/translations/zh-Hans.json`
+- 手动安装：覆盖 `custom_components/hoymiles_g2/` → **完整重启 HA Core**
+- 临时绕过：直接把 HA 上 `custom_components/hoymiles_g2/translations/zh-Hans.json`
   里的 `client_prefix-SN` 相关文本改成不含尖括号的写法，然后重启
 
 > 注意：**只重启不换文件是没用的**，必须让新文件先落地。
@@ -580,7 +580,7 @@ powershell -ExecutionPolicy Bypass -File scripts\make_brand_icon.ps1
    的本地品牌图接口。
 2. CDN 上的图来自 `home-assistant/brands` 仓库，而该仓库**已不再接收新第三方
    集成的图标**（其 PR 模板原文：*Pull requests for adding new custom
-   components will no longer be accepted*），所以永远不会有 `hoymiles` 的条目。
+   components will no longer be accepted*），所以永远不会有 `hoymiles_g2` 的条目。
 3. 于是 CDN 返回 HA 的通用灰底占位图（约 3039 字节）。
 
 结论：**本地 `brand/` 目录只对 HA 自己有效，对 HACS 列表无效。**
@@ -593,7 +593,7 @@ powershell -ExecutionPolicy Bypass -File scripts\make_brand_icon.ps1
 
 想推动的话**去对应 issue 点 👍 / 补一句复现信息**即可。
 
-> ⚠️ **不要**去 `home-assistant/brands` 提 PR 加 `custom_integrations/hoymiles/`：
+> ⚠️ **不要**去 `home-assistant/brands` 提 PR 加 `custom_integrations/hoymiles_g2/`：
 > 官方已明确不再接收，且该项目 `AI_POLICY.md` 禁止用自主 agent 提 PR/issue。
 
 ### 5.7 换了品牌图但界面还是旧的
@@ -602,7 +602,7 @@ HA 2026.3 起品牌图走本地代理并**落盘缓存**，改了文件不清缓
 
 按顺序处理：
 
-1. **清 HA 侧缓存**：删除 `/homeassistant/.cache/brands/integrations/hoymiles/`
+1. **清 HA 侧缓存**：删除 `/homeassistant/.cache/brands/integrations/hoymiles_g2/`
    （容器内 HA 配置目录是 `/homeassistant`，不是 `/config`）。
 2. **浏览器硬刷新**：`Ctrl` + `Shift` + `R`。
 3. 浏览器缓存 7 天、Cloudflare 24h（只影响 CDN 那一路）。
@@ -611,7 +611,7 @@ HA 2026.3 起品牌图走本地代理并**落盘缓存**，改了文件不清缓
 
 ```js
 // 在 HA 页面控制台里执行；token 可从任意品牌图 <img> 的 src 里抄
-const r = await fetch("/api/brands/integration/hoymiles/icon.png?token=<token>");
+const r = await fetch("/api/brands/integration/hoymiles_g2/icon.png?token=<token>");
 console.log((await r.arrayBuffer()).byteLength);   // 与本地文件大小对比
 ```
 

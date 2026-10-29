@@ -41,7 +41,7 @@ Patches
       ``{"phase_a":..,"phase_b":..,"phase_c":..}``, but a plain ``number``
       entity can only publish the slider value, which made the entity unusable.
       The template wraps the value and applies it to all three phases; per phase
-      control is offered by ``number.py`` and ``hoymiles.set_phase_output_power``.
+      control is offered by ``number.py`` and ``hoymiles_g2.set_phase_output_power``.
 ``number/<dev_id>/power_ctrl``, ``number/<dev_id>/output_power``,
 ``button/<dev_id>/reboot``
     * functionally untouched, only made availability aware.

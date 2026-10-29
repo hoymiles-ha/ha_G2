@@ -22,7 +22,7 @@
     Path to the source logo image (png / jpg / bmp).
 
 .PARAMETER OutputDir
-    Destination directory. Defaults to custom_components/hoymiles/brand.
+    Destination directory. Defaults to custom_components/hoymiles_g2/brand.
 
 .PARAMETER IconSize
     Side length of icon.png. Default 256.
@@ -79,7 +79,7 @@ if (-not (Test-Path -LiteralPath $InputImage)) {
 
 if (-not $OutputDir) {
     $repoRoot = Split-Path -Parent $PSScriptRoot
-    $OutputDir = Join-Path $repoRoot "custom_components\hoymiles\brand"
+    $OutputDir = Join-Path $repoRoot "custom_components\hoymiles_g2\brand"
 }
 
 Add-Type -AssemblyName System.Drawing

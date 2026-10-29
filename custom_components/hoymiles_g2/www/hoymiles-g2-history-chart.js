@@ -1,7 +1,7 @@
 /* ============================================================================
  * Hoymiles Micro Storage — History chart card
  * ----------------------------------------------------------------------------
- * Lovelace card: `custom:hoymiles-history-chart`
+ * Lovelace card: `custom:hoymiles-g2-history-chart`
  *
  * A power / SOC chart with a 日 / 月 / 年 selector and a date navigator, drawn
  * like the vendor app's history pages:
@@ -25,7 +25,7 @@
  * never touches the database itself, and `recorder` has to be enabled.
  *
  * Card config:
- *   type: custom:hoymiles-history-chart
+ *   type: custom:hoymiles-g2-history-chart
  *   dev_id: MSA-280520260806        # optional when every series names an entity
  *   title: History
  *   language: en                    # optional (en|zh); omit to follow Home Assistant
@@ -326,7 +326,7 @@ function _hmHistoryRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-history-chart-editor");
+      return document.createElement("hoymiles-g2-history-chart-editor");
     }
 
     static getStubConfig() {
@@ -410,7 +410,7 @@ function _hmHistoryRegister() {
 
     setConfig(config) {
       if (!config || !Array.isArray(config.series) || !config.series.length) {
-        throw new Error("hoymiles-history-chart: 'series' must list at least one entity");
+        throw new Error("hoymiles-g2-history-chart: 'series' must list at least one entity");
       }
       this._config = {
         ...config,
@@ -1247,17 +1247,17 @@ function _hmHistoryRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-history-chart-editor")) {
-    customElements.define("hoymiles-history-chart-editor", HoymilesHistoryChartEditor);
+  if (!customElements.get("hoymiles-g2-history-chart-editor")) {
+    customElements.define("hoymiles-g2-history-chart-editor", HoymilesHistoryChartEditor);
   }
-  if (!customElements.get("hoymiles-history-chart")) {
-    customElements.define("hoymiles-history-chart", HoymilesHistoryChart);
+  if (!customElements.get("hoymiles-g2-history-chart")) {
+    customElements.define("hoymiles-g2-history-chart", HoymilesHistoryChart);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-history-chart")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-history-chart")) {
     window.customCards.push({
-      type: "hoymiles-history-chart",
+      type: "hoymiles-g2-history-chart",
       name: "Hoymiles History Chart",
       description:
         "Power / SOC history with a day-month-year selector and date navigator, "

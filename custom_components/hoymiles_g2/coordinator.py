@@ -222,7 +222,7 @@ class HoymilesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         if unknown:
             _LOGGER.warning(
                 "Phase output power: %s had no known value yet and defaults to %s W. "
-                "Set all three phases, or use hoymiles.set_phase_output_power, for "
+                "Set all three phases, or use hoymiles_g2.set_phase_output_power, for "
                 "full control.",
                 ", ".join(unknown),
                 PHASE_POWER_MIN,

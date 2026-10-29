@@ -18,7 +18,7 @@ This platform adds per phase control:
 * the last known values come from the coordinator, which watches the command
   topic itself - so values written by the firmware entity (or by anything else
   on the broker) are picked up as well;
-* ``hoymiles.set_phase_output_power`` sets all three atomically.
+* ``hoymiles_g2.set_phase_output_power`` sets all three atomically.
 
 ⚠️ The device never reports the configured per phase limits back, so the value
 shown here is the last value that was *commanded*.  Until a phase has been set at

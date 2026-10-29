@@ -1,14 +1,14 @@
 /* ============================================================================
  * Hoymiles Micro Storage — Pack list card
  * ----------------------------------------------------------------------------
- * Lovelace card: `custom:hoymiles-pack-list`
+ * Lovelace card: `custom:hoymiles-g2-pack-list`
  *
  * One row per battery pack: SOC bar, SOC %, temperature and the heating flag.
  * The number of rows follows the same rule as the battery card (the
  * `pack_count` sensor, cross-checked against the packs that report a SOC).
  *
  * Card config:
- *   type: custom:hoymiles-pack-list
+ *   type: custom:hoymiles-g2-pack-list
  *   dev_id: MSA-280520260806
  *   language: en               # optional (en|zh); omit to follow Home Assistant
  *   title: Battery packs
@@ -106,7 +106,7 @@ function _hmPackListRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-pack-list-editor");
+      return document.createElement("hoymiles-g2-pack-list-editor");
     }
 
     static getStubConfig() {
@@ -139,7 +139,7 @@ function _hmPackListRegister() {
 
     setConfig(config) {
       if (!config || !config.dev_id) {
-        throw new Error("hoymiles-pack-list: 'dev_id' is required");
+        throw new Error("hoymiles-g2-pack-list: 'dev_id' is required");
       }
       this._config = { ...config };
       this._cache.clear();
@@ -190,7 +190,7 @@ function _hmPackListRegister() {
       }
 
       if (!found && hass.entities) {
-        const wantUid = new Set([`${this._dev()}_${key}`, `hoymiles_${this._dev()}_${key}`]);
+        const wantUid = new Set([`${this._dev()}_${key}`, `hoymiles_g2_${this._dev()}_${key}`]);
         for (const [entityId, entry] of Object.entries(hass.entities)) {
           if (entry && wantUid.has(entry.unique_id)) { found = entityId; break; }
         }
@@ -337,17 +337,17 @@ function _hmPackListRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-pack-list-editor")) {
-    customElements.define("hoymiles-pack-list-editor", HoymilesPackListEditor);
+  if (!customElements.get("hoymiles-g2-pack-list-editor")) {
+    customElements.define("hoymiles-g2-pack-list-editor", HoymilesPackListEditor);
   }
-  if (!customElements.get("hoymiles-pack-list")) {
-    customElements.define("hoymiles-pack-list", HoymilesPackList);
+  if (!customElements.get("hoymiles-g2-pack-list")) {
+    customElements.define("hoymiles-g2-pack-list", HoymilesPackList);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-pack-list")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-pack-list")) {
     window.customCards.push({
-      type: "hoymiles-pack-list",
+      type: "hoymiles-g2-pack-list",
       name: "Hoymiles Pack List",
       description: "Per-pack SOC bar, SOC, temperature and heating flag.",
       preview: false,

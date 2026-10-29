@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     发布一个新版本：bump manifest.json 版本号 -> 提交 -> 打 tag ->（可选）推送。
 
@@ -63,7 +63,7 @@ if ($Version -notmatch '^\d+\.\d+\.\d+([-.][0-9A-Za-z.\-]+)?$') {
 }
 
 $tag = "v$Version"
-$manifestRel = "custom_components\hoymiles\manifest.json"
+$manifestRel = "custom_components\hoymiles_g2\manifest.json"
 $manifestPath = Join-Path $repoRoot $manifestRel
 $hacsPath = Join-Path $repoRoot "hacs.json"
 
@@ -78,9 +78,9 @@ $required = @(
     "README.md",
     "hacs.json",
     $manifestRel,
-    "custom_components\hoymiles\brand\icon.png",
-    "custom_components\hoymiles\www\hoymiles-tou-editor.js",
-    "custom_components\hoymiles\www\hoymiles-energy-sankey.js"
+    "custom_components\hoymiles_g2\brand\icon.png",
+    "custom_components\hoymiles_g2\www\hoymiles-g2-tou-editor.js",
+    "custom_components\hoymiles_g2\www\hoymiles-g2-energy-sankey.js"
 )
 $missing = @($required | Where-Object { -not (Test-Path (Join-Path $repoRoot $_)) })
 if ($missing.Count -gt 0) { Fail ("缺少 HACS 上架必需文件：" + ($missing -join ", ")) }
@@ -90,7 +90,7 @@ Ok "必需文件齐全"
 # (it renders at ~40 px in the HA "pick a brand" dialog, where a bad mark just
 # looks like a smudge).
 Add-Type -AssemblyName System.Drawing
-$brandDir = Join-Path $repoRoot "custom_components\hoymiles\brand"
+$brandDir = Join-Path $repoRoot "custom_components\hoymiles_g2\brand"
 foreach ($img in @(
         @{ Name = "icon.png"; WantSquare = $true },
         @{ Name = "logo.png"; WantSquare = $false }

@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from typing import Final
 
-DOMAIN: Final = "hoymiles"
+DOMAIN: Final = "hoymiles_g2"
 MANUFACTURER: Final = "Hoymiles"
-NAME: Final = "Hoymiles Official"
+NAME: Final = "Hoymiles MS-G2"
 
 CONF_DEV_ID: Final = "dev_id"
 
@@ -80,7 +80,7 @@ LEGACY_DISCOVERY_OBJECTS: Final = (
 
 # Availability topic owned by the integration.  It is only referenced by the
 # patched discovery payloads, so it never collides with firmware topics.
-T_AVAILABILITY: Final = "hoymiles/{dev_id}/availability"
+T_AVAILABILITY: Final = "hoymiles_g2/{dev_id}/availability"
 PAYLOAD_AVAILABLE: Final = "online"
 PAYLOAD_NOT_AVAILABLE: Final = "offline"
 
@@ -92,7 +92,7 @@ PAYLOAD_NOT_AVAILABLE: Final = "offline"
 # It cannot point at ``system/state`` directly: that topic is only pushed every
 # 5 minutes, and the bundled TOU card gates its UI on the select state, so a
 # freshly issued command would take up to 5 minutes to show up.
-T_EMS_MODE_STATE: Final = "hoymiles/{dev_id}/ems_mode/state"
+T_EMS_MODE_STATE: Final = "hoymiles_g2/{dev_id}/ems_mode/state"
 
 # ---------------------------------------------------------------------------
 # Multi phase output power (protocol §8 command, §15 payload)
@@ -189,18 +189,18 @@ TOU_GET_STATUS: Final = {
 # ---------------------------------------------------------------------------
 # Frontend
 # ---------------------------------------------------------------------------
-FRONTEND_URL: Final = "/hoymiles_static"
+FRONTEND_URL: Final = "/hoymiles_g2_static"
 
 # Frontend assets bundled in ``www/`` and auto-injected as ES modules.
 # Add new cards here; ``__init__._async_register_frontend`` walks this tuple.
-CARD_FILENAME: Final = "hoymiles-tou-editor.js"
-SANKEY_CARD_FILENAME: Final = "hoymiles-energy-sankey.js"
-POWER_FLOW_CARD_FILENAME: Final = "hoymiles-power-flow.js"
-BATTERY_CARD_FILENAME: Final = "hoymiles-battery.js"
-HISTORY_CHART_CARD_FILENAME: Final = "hoymiles-history-chart.js"
-GAUGE_CARD_FILENAME: Final = "hoymiles-gauge.js"
-CONTROL_CARD_FILENAME: Final = "hoymiles-control.js"
-PACK_LIST_CARD_FILENAME: Final = "hoymiles-pack-list.js"
+CARD_FILENAME: Final = "hoymiles-g2-tou-editor.js"
+SANKEY_CARD_FILENAME: Final = "hoymiles-g2-energy-sankey.js"
+POWER_FLOW_CARD_FILENAME: Final = "hoymiles-g2-power-flow.js"
+BATTERY_CARD_FILENAME: Final = "hoymiles-g2-battery.js"
+HISTORY_CHART_CARD_FILENAME: Final = "hoymiles-g2-history-chart.js"
+GAUGE_CARD_FILENAME: Final = "hoymiles-g2-gauge.js"
+CONTROL_CARD_FILENAME: Final = "hoymiles-g2-control.js"
+PACK_LIST_CARD_FILENAME: Final = "hoymiles-g2-pack-list.js"
 FRONTEND_ASSETS: Final = (
     CARD_FILENAME,
     SANKEY_CARD_FILENAME,

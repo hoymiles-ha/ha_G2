@@ -26,7 +26,7 @@ jobs:
           category: integration
           # Uncomment an entry if a check cannot pass yet and you accept the
           # trade-off. `brands` is satisfied by the bundled
-          # custom_components/hoymiles/brand/icon.png, so it is NOT ignored.
+          # custom_components/hoymiles_g2/brand/icon.png, so it is NOT ignored.
           # ignore: brands
 
   hassfest:

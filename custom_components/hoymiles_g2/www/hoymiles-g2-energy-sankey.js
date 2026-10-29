@@ -1,7 +1,7 @@
 /* ============================================================================
  * Hoymiles Micro Storage — Energy flow (Sankey) card
  * ----------------------------------------------------------------------------
- * Lovelace card bundled with the `hoymiles` custom integration.
+ * Lovelace card bundled with the `hoymiles_g2` custom integration.
  *
  * It reads the device's energy sensors from the Home Assistant recorder's
  * long-term statistics via the public websocket command
@@ -23,7 +23,7 @@
  *   working on an offline Raspberry Pi.
  *
  * Card config:
- *   type: custom:hoymiles-energy-sankey
+ *   type: custom:hoymiles-g2-energy-sankey
  *   dev_id: MSA-280520260806      # required
  *   title: Energy flow            # optional
  *   language: en                  # optional (en|zh); omit to follow Home Assistant
@@ -398,7 +398,7 @@ function _hmSankeyRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-energy-sankey-editor");
+      return document.createElement("hoymiles-g2-energy-sankey-editor");
     }
 
     static getStubConfig() {
@@ -459,7 +459,7 @@ function _hmSankeyRegister() {
 
     setConfig(config) {
       if (!config || !config.dev_id) {
-        throw new Error("hoymiles-energy-sankey: 'dev_id' is required");
+        throw new Error("hoymiles-g2-energy-sankey: 'dev_id' is required");
       }
       this._config = { ...config };
       if (config.range) this._range = config.range;
@@ -519,7 +519,7 @@ function _hmSankeyRegister() {
         if (entityId.startsWith(prefix) && entityId.endsWith(suffix)) return entityId;
       }
 
-      const uniqueSuffix = `hoymiles_${this._dev()}_${suffix}`;
+      const uniqueSuffix = `hoymiles_g2_${this._dev()}_${suffix}`;
       for (const [entityId, entry] of Object.entries(entities)) {
         if (entry && entry.unique_id === uniqueSuffix) return entityId;
       }
@@ -1123,17 +1123,17 @@ function _hmSankeyRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-energy-sankey-editor")) {
-    customElements.define("hoymiles-energy-sankey-editor", HoymilesEnergySankeyEditor);
+  if (!customElements.get("hoymiles-g2-energy-sankey-editor")) {
+    customElements.define("hoymiles-g2-energy-sankey-editor", HoymilesEnergySankeyEditor);
   }
-  if (!customElements.get("hoymiles-energy-sankey")) {
-    customElements.define("hoymiles-energy-sankey", HoymilesEnergySankey);
+  if (!customElements.get("hoymiles-g2-energy-sankey")) {
+    customElements.define("hoymiles-g2-energy-sankey", HoymilesEnergySankey);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-energy-sankey")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-energy-sankey")) {
     window.customCards.push({
-      type: "hoymiles-energy-sankey",
+      type: "hoymiles-g2-energy-sankey",
       name: "Hoymiles Energy Flow (Sankey)",
       description:
         "Sankey diagram of the energy flow of a Hoymiles micro storage device, "

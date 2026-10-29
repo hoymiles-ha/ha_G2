@@ -1,7 +1,7 @@
 # Card reference
 
 Complete option list for the eight Lovelace cards bundled with the
-`hoymiles` custom integration.
+`hoymiles_g2` custom integration.
 
 **English** · [简体中文](CARDS.zh-Hans.md)
 
@@ -14,7 +14,7 @@ there is **no "add resource" step** and no CDN is used. Add a card with
 **Add card → Manual** and paste YAML, or add it directly to a dashboard YAML file.
 
 After the integration is installed and Home Assistant has restarted, the cards
-appear as `custom:hoymiles-*`.
+appear as `custom:hoymiles-g2-*`.
 
 > Changed a card file? Hard-refresh the browser (`Ctrl` + `F5`).
 
@@ -44,7 +44,7 @@ override them individually with the card's `entities:` map.
 > This is why a shared dashboard reads correctly for an English and a Chinese user
 > at the same time: the language is a property of the viewer, not of the card.
 
-> `hoymiles-gauge` is the exception — it has no built-in wording at all. Every word
+> `hoymiles-g2-gauge` is the exception — it has no built-in wording at all. Every word
 > on it comes from your own `name` / `label` / `icon`, so it never needs translating.
 
 ### Making your own text follow the language too
@@ -55,7 +55,7 @@ card cannot translate it. It can, however, pick between the languages you supply
 write a **map** instead of a string.
 
 ```yaml
-type: custom:hoymiles-history-chart
+type: custom:hoymiles-g2-history-chart
 # instead of:  title: History
 title:
   en: History
@@ -77,9 +77,9 @@ Supported on these options:
 | Card | Options that accept a map |
 |---|---|
 | all cards | `title` |
-| `hoymiles-history-chart` | `title`, `series[].name` |
-| `hoymiles-gauge` | `name`, `label` |
-| `hoymiles-energy-sankey` | `title`, `balancer_label` |
+| `hoymiles-g2-history-chart` | `title`, `series[].name` |
+| `hoymiles-g2-gauge` | `name`, `label` |
+| `hoymiles-g2-energy-sankey` | `title`, `balancer_label` |
 
 > Because the visual card editor holds plain strings, a map shows there as an empty
 > field and the label says `accepts an en/zh map`. Edit those options in the YAML
@@ -124,7 +124,7 @@ Two things follow, both easy to get wrong:
 
 ---
 
-## 1. `custom:hoymiles-power-flow`
+## 1. `custom:hoymiles-g2-power-flow`
 
 Draws the system as a **wiring diagram**, the way the vendor app's system
 screen does: one icon per branch, the unit in the middle, the grid tie point as
@@ -141,7 +141,7 @@ are the app's own artwork, embedded in the card.
 - **The unit in the middle works as soon as anything flows through it**, so its
   artwork is the coloured one then and the dim one when the whole system is idle.
 ```yaml
-type: custom:hoymiles-power-flow
+type: custom:hoymiles-g2-power-flow
 dev_id: MSA-280520260806
 title: 我的家
 language: zh
@@ -235,7 +235,7 @@ carrying no power gets a grey ring — never a *standby* chip.
 
 ---
 
-## 2. `custom:hoymiles-battery`
+## 2. `custom:hoymiles-g2-battery`
 
 Draws the physical battery stack module by module, so the picture always matches
 how many packs are actually installed (1–4), each with its own SOC and
@@ -258,7 +258,7 @@ feet.
 The head module is also where the **host temperature** is called out.
 
 ```yaml
-type: custom:hoymiles-battery
+type: custom:hoymiles-g2-battery
 dev_id: MSA-280520260806
 title: HiBattery 4020 X
 language: zh
@@ -314,14 +314,14 @@ language: zh
 
 ---
 
-## 3. `custom:hoymiles-pack-list`
+## 3. `custom:hoymiles-g2-pack-list`
 
 A compact alternative to the battery illustration: one row per pack, SOC bar on
 the left, SOC percentage and heating flag on the right. Pack count follows the
 same rule as the battery card.
 
 ```yaml
-type: custom:hoymiles-pack-list
+type: custom:hoymiles-g2-pack-list
 dev_id: MSA-280520260806
 language: zh
 title: 电池电量
@@ -339,7 +339,7 @@ show_temperature: false
 
 ---
 
-## 4. `custom:hoymiles-history-chart`
+## 4. `custom:hoymiles-g2-history-chart`
 
 Day / month / year curves with date navigation, drawn like the vendor app's
 history pages. Positive values stack upward from the zero line and negative
@@ -347,7 +347,7 @@ values stack downward, so a charge/discharge sensor reads naturally on both side
 of the axis.
 
 ```yaml
-type: custom:hoymiles-history-chart
+type: custom:hoymiles-g2-history-chart
 dev_id: MSA-280520260806
 title: 历史数据
 language: zh
@@ -410,14 +410,14 @@ series:
 
 ---
 
-## 5. `custom:hoymiles-gauge`
+## 5. `custom:hoymiles-g2-gauge`
 
 A stat tile: title and icon on top, big value in the middle, and one green arc at
 the bottom filled by the value's share of `min`…`max`, with the percentage printed
 inside the arc.
 
 ```yaml
-type: custom:hoymiles-gauge
+type: custom:hoymiles-g2-gauge
 entity: sensor.msa_280520260806_battery_charge_energy_today
 name: 今日充电量
 unit: kWh
@@ -457,7 +457,7 @@ invented ceiling, give the arc its own source. The big readout still shows
 | `percent_denominator` | Optional, defaults to the numerator. |
 
 ```yaml
-type: custom:hoymiles-gauge
+type: custom:hoymiles-g2-gauge
 entity: sensor.msa_280520260806_system_pv_energy_today
 name: 今日发电量
 unit: kWh
@@ -481,7 +481,7 @@ Self-consumption = *PV energy − exported energy* ÷ *PV energy*.
 
 ---
 
-## 6. `custom:hoymiles-control`
+## 6. `custom:hoymiles-g2-control`
 
 Every command in section 10–20 of the MQTT protocol guide, as buttons and inputs.
 Commands are published **straight to the protocol topics** (qos 1, retain false),
@@ -490,7 +490,7 @@ narrower option list than the protocol allows. Current values are read back from
 the matching entities when they exist.
 
 ```yaml
-type: custom:hoymiles-control
+type: custom:hoymiles-g2-control
 dev_id: MSA-280520260806
 language: zh
 title: 设备控制
@@ -529,11 +529,11 @@ on subscribes to two wildcards over the Home Assistant websocket (the
 | Wildcard | Carries |
 |---|---|
 | `homeassistant/+/<dev_id>/#` | what the device publishes (`quick/state` every second, `device/state`, `system/state`, `tou_plan/status`, the discovery configs) plus what HA sends (`set`, `command`, `trigger`, `get`) |
-| `hoymiles/<dev_id>/#` | the integration's own topics (`availability`, the EMS mode echo) |
+| `hoymiles_g2/<dev_id>/#` | the integration's own topics (`availability`, the EMS mode echo) |
 
 - Direction is read off the topic: the command side (`/set`, `/command`,
   `/trigger`, `/get`) is *HA → device*, everything else on those trees is
-  *device → HA*, and the `hoymiles/` family belongs to this end as well.
+  *device → HA*, and the `hoymiles_g2/` family belongs to this end as well.
 - Every row shows the time, a direction badge, the topic with the boilerplate
   stripped (`sensor/quick/state`; the full topic is the tooltip) and the payload,
   pretty printed when it is JSON and truncated when it is long.
@@ -563,15 +563,15 @@ on subscribes to two wildcards over the Home Assistant websocket (the
 
 ---
 
-## 7. `custom:hoymiles-tou-editor`
+## 7. `custom:hoymiles-g2-tou-editor`
 
 The visual TOU plan editor. It talks to the device through the integration
-services (`hoymiles.set_tou_day_plan`, `set_tou_week_plan`, `get_tou_plan`,
+services (`hoymiles_g2.set_tou_day_plan`, `set_tou_week_plan`, `get_tou_plan`,
 `set_ems_mode`) and falls back to `mqtt.publish` if the integration is somehow
 absent.
 
 ```yaml
-type: custom:hoymiles-tou-editor
+type: custom:hoymiles-g2-tou-editor
 dev_id: MSA-280520260806
 language: zh
 ```
@@ -599,7 +599,7 @@ language: zh
 
 > **Why the EMS gate exists.** Early firmware shipped no `state_topic` for
 > `ems_mode`, so the integration maintains a **retained state topic** of its own
-> at `hoymiles/<dev_id>/ems_mode/state`:
+> at `hoymiles_g2/<dev_id>/ems_mode/state`:
 >
 > - as soon as anyone publishes to `…/ems_mode/command`, the integration echoes
 >   it to that topic, so the UI and cards refresh immediately;
@@ -613,12 +613,12 @@ language: zh
 
 ---
 
-## 8. `custom:hoymiles-energy-sankey`
+## 8. `custom:hoymiles-g2-energy-sankey`
 
 A source → sink energy-flow sankey built from long-term statistics.
 
 ```yaml
-type: custom:hoymiles-energy-sankey
+type: custom:hoymiles-g2-energy-sankey
 dev_id: MSA-280520260806
 title: 能量流
 language: zh

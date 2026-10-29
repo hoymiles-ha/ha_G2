@@ -1,6 +1,6 @@
 # 卡片参数总表
 
-`hoymiles` 集成捆绑的八张 Lovelace 卡片的完整参数说明。
+`hoymiles_g2` 集成捆绑的八张 Lovelace 卡片的完整参数说明。
 
 [English](CARDS.md) · **简体中文**
 
@@ -11,7 +11,7 @@
 集成启动时会把八张卡片全部注册为前端模块，因此**无需手动添加资源**，也不依赖任何
 CDN。用 **添加卡片 → 手动** 粘贴 YAML，或直接写进仪表盘 YAML 文件即可。
 
-集成安装完并重启 Home Assistant 之后，卡片类型为 `custom:hoymiles-*`。
+集成安装完并重启 Home Assistant 之后，卡片类型为 `custom:hoymiles-g2-*`。
 
 > 改过卡片文件？请硬刷新浏览器（`Ctrl` + `F5`）。
 
@@ -40,7 +40,7 @@ CDN。用 **添加卡片 → 手动** 粘贴 YAML，或直接写进仪表盘 YAM
 > 所以同一个仪表盘对英文用户和中文用户会各自显示成正确的语言：语言是**看的人的属性**，
 > 不是卡片的属性。
 
-> `hoymiles-gauge` 是例外 —— 它内部没有任何文案，上面的字全部来自你配置的
+> `hoymiles-g2-gauge` 是例外 —— 它内部没有任何文案，上面的字全部来自你配置的
 > `name` / `label` / `icon`，永远不需要翻译。
 
 ### 让自己写的文字也跟随语言
@@ -50,7 +50,7 @@ gauge 的 name、`balancer_label`）是你自己的，卡片无法翻译 —— 
 多个语言之间选择：把**字符串换成映射**即可。
 
 ```yaml
-type: custom:hoymiles-history-chart
+type: custom:hoymiles-g2-history-chart
 # 原来： title: History
 title:
   en: History
@@ -71,9 +71,9 @@ series:
 | 卡片 | 支持映射的参数 |
 |---|---|
 | 所有卡片 | `title` |
-| `hoymiles-history-chart` | `title`、`series[].name` |
-| `hoymiles-gauge` | `name`、`label` |
-| `hoymiles-energy-sankey` | `title`、`balancer_label` |
+| `hoymiles-g2-history-chart` | `title`、`series[].name` |
+| `hoymiles-g2-gauge` | `name`、`label` |
+| `hoymiles-g2-energy-sankey` | `title`、`balancer_label` |
 
 > 可视化卡片编辑器只能存普通字符串，所以映射在那里显示为**空字段**，标签会写
 > `accepts an en/zh map`。这些参数请在 YAML 编辑器（⋮ → *在 YAML 中编辑*）里改。
@@ -111,7 +111,7 @@ computeViewTitle = (view, index) => view.title ?? (view.path ? titleCase(view.pa
 
 ---
 
-## 1. `custom:hoymiles-power-flow`
+## 1. `custom:hoymiles-g2-power-flow`
 
 把系统画成一张**接线示意图**（和手机 App 的系统页一致）：每条支路一个图标、
 中间是主机（App 那套「方框里插头」的图）、并网点用一个小圆点，连线是粗圆头线
@@ -127,7 +127,7 @@ computeViewTitle = (view, index) => view.title ?? (view.path ? titleCase(view.pa
 ```
 
 ```yaml
-type: custom:hoymiles-power-flow
+type: custom:hoymiles-g2-power-flow
 dev_id: MSA-280520260806
 title: 我的家
 language: zh
@@ -211,7 +211,7 @@ language: zh
 
 ---
 
-## 2. `custom:hoymiles-battery`
+## 2. `custom:hoymiles-g2-battery`
 
 按**实际电池包数量**自适应绘制电池堆：1～4 个电池包各对应一种外形，每个模组
 配一个左右交替的气泡显示自己的 SOC 与温度（和 App 的 HiBattery X 页面一致）。
@@ -229,7 +229,7 @@ language: zh
 主机温度的气泡也指向这个头模组。
 
 ```yaml
-type: custom:hoymiles-battery
+type: custom:hoymiles-g2-battery
 dev_id: MSA-280520260806
 title: HiBattery 4020 X
 language: zh
@@ -278,13 +278,13 @@ language: zh
 
 ---
 
-## 3. `custom:hoymiles-pack-list`
+## 3. `custom:hoymiles-g2-pack-list`
 
 电池堆插图的紧凑替代：一行一个电池包，左侧 SOC 进度条、右侧 SOC 百分比与加热标记。
 包数量与电池卡片用同一套规则。
 
 ```yaml
-type: custom:hoymiles-pack-list
+type: custom:hoymiles-g2-pack-list
 dev_id: MSA-280520260806
 language: zh
 title: 电池电量
@@ -302,7 +302,7 @@ show_temperature: false
 
 ---
 
-## 4. `custom:hoymiles-history-chart`
+## 4. `custom:hoymiles-g2-history-chart`
 
 按**日 / 月 / 年**查看曲线，并可用 `‹` `›` 或日期输入框翻到任意时间段，绘制风格与
 厂商 App 的历史页一致。功率 / 电量这类**会相加**的 series 会堆叠（正值向上、负值向下，
@@ -311,7 +311,7 @@ show_temperature: false
 162~243%，在 0~100 的轴上就只有第一条看得见。用 `stack` 可显式指定。
 
 ```yaml
-type: custom:hoymiles-history-chart
+type: custom:hoymiles-g2-history-chart
 dev_id: MSA-280520260806
 title: 历史数据
 language: zh
@@ -363,13 +363,13 @@ series:
 
 ---
 
-## 5. `custom:hoymiles-gauge`
+## 5. `custom:hoymiles-g2-gauge`
 
 一张**统计卡**：左上标题、右上图标、中间大字数值，下方**一条绿弧**按数值占
 `min`~`max` 的百分比填充，弧中央同时显示该百分比。HA 自带 `gauge` 卡片的轻量替代。
 
 ```yaml
-type: custom:hoymiles-gauge
+type: custom:hoymiles-g2-gauge
 entity: sensor.msa_280520260806_battery_charge_energy_today
 name: 今日充电量
 unit: kWh
@@ -408,7 +408,7 @@ color: "#22c55e"
 | `percent_denominator` | 可选，默认等于被减数 |
 
 ```yaml
-type: custom:hoymiles-gauge
+type: custom:hoymiles-g2-gauge
 entity: sensor.msa_280520260806_system_pv_energy_today
 name: 今日发电量
 unit: kWh
@@ -430,14 +430,14 @@ percent_denominator: sensor.msa_280520260806_system_pv_energy_today
 
 ---
 
-## 6. `custom:hoymiles-control`
+## 6. `custom:hoymiles-g2-control`
 
 把《禾迈微储 MQTT 协议开发指南》§10~§20 里**所有可下发的控制**做成按钮 / 输入框。
 指令**直接发布到协议 topic**（qos 1、retain false），因此即使某个 discovery 实体缺失
 或选项列表比协议窄，卡片也仍可用；当前值则从对应实体回读。
 
 ```yaml
-type: custom:hoymiles-control
+type: custom:hoymiles-g2-control
 dev_id: MSA-280520260806
 language: zh
 title: 设备控制
@@ -475,10 +475,10 @@ WebSocket（`mqtt/subscribe` 命令）订阅两个通配主题，把两个方向
 | 通配主题 | 内容 |
 |---|---|
 | `homeassistant/+/<dev_id>/#` | 设备上报的状态（`quick/state` 1 秒、`device/state`、`system/state`、`tou_plan/status`、discovery 配置）+ HA 下发的命令（`set`/`command`/`trigger`/`get`） |
-| `hoymiles/<dev_id>/#` | 集成自己的主题（`availability` 在线看护、`ems_mode/state` 回显） |
+| `hoymiles_g2/<dev_id>/#` | 集成自己的主题（`availability` 在线看护、`ems_mode/state` 回显） |
 
 - 方向按主题判定：**HA 写命令侧**（`/set`、`/command`、`/trigger`、`/get`）记作
-  「HA 下发」，其余记作「设备上报」；`hoymiles/` 那一族是集成自己的，也算下发。
+  「HA 下发」，其余记作「设备上报」；`hoymiles_g2/` 那一族是集成自己的，也算下发。
 - 每行显示时间、方向胶囊、去掉样板后的主题（如 `sensor/quick/state`，完整 topic 在悬停提示里）
   和 payload；payload 是 JSON 就自动缩进，过长则截断。
 - 列表**只保留最近 200 条**（`quick/state` 每秒一条，约 3 分钟），丢弃的旧条数会计数显示。
@@ -502,14 +502,14 @@ WebSocket（`mqtt/subscribe` 命令）订阅两个通配主题，把两个方向
 
 ---
 
-## 7. `custom:hoymiles-tou-editor`
+## 7. `custom:hoymiles-g2-tou-editor`
 
-分时计划可视化编辑器。它通过集成服务（`hoymiles.set_tou_day_plan`、
+分时计划可视化编辑器。它通过集成服务（`hoymiles_g2.set_tou_day_plan`、
 `set_tou_week_plan`、`get_tou_plan`、`set_ems_mode`）与设备交互；万一集成不在了，
 会退化为直接 `mqtt.publish`。
 
 ```yaml
-type: custom:hoymiles-tou-editor
+type: custom:hoymiles-g2-tou-editor
 dev_id: MSA-280520260806
 language: zh
 ```
@@ -534,7 +534,7 @@ language: zh
 - 卡片自带 UI 配置编辑器，也可以在仪表盘里图形化添加与配置。
 
 > **为什么要有 EMS 门控。** 早期固件没有给 `ems_mode` 提供 `state_topic`，集成会给它
-> 补一个**自维护的 retained 状态话题** `hoymiles/<dev_id>/ems_mode/state`：
+> 补一个**自维护的 retained 状态话题** `hoymiles_g2/<dev_id>/ems_mode/state`：
 >
 > - 任何人向 `…/ems_mode/command` 下发后，集成立即回显到该话题 → 界面 / 卡片即时刷新；
 > - 同时跟随 `system/state` 里的 `ems_mode`（设备真实运行模式，5 分钟周期）进行纠正，
@@ -545,12 +545,12 @@ language: zh
 
 ---
 
-## 8. `custom:hoymiles-energy-sankey`
+## 8. `custom:hoymiles-g2-energy-sankey`
 
 基于长期统计绘制的「源 → 汇」能量流桑基图。
 
 ```yaml
-type: custom:hoymiles-energy-sankey
+type: custom:hoymiles-g2-energy-sankey
 dev_id: MSA-280520260806
 title: 能量流
 language: zh

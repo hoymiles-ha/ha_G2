@@ -1,9 +1,9 @@
-﻿<#
+<#
 .SYNOPSIS
     生成 HACS / Home Assistant 品牌图标 (brand/icon.png)。
 
 .DESCRIPTION
-    输出 256x256 的 PNG，放在 custom_components/hoymiles/brand/icon.png。
+    输出 256x256 的 PNG，放在 custom_components/hoymiles_g2/brand/icon.png。
     这是 HACS `brands` 校验的必需项：要么仓库里有本地图标，要么已合入
     home-assistant/brands 仓库（本地图标可免去一次上游 PR）。
 
@@ -22,7 +22,7 @@ $ErrorActionPreference = "Stop"
 
 if (-not $OutputDir) {
     $repoRoot = Split-Path -Parent $PSScriptRoot
-    $OutputDir = Join-Path $repoRoot "custom_components\hoymiles\brand"
+    $OutputDir = Join-Path $repoRoot "custom_components\hoymiles_g2\brand"
 }
 
 Add-Type -AssemblyName System.Drawing

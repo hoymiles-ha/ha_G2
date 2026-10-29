@@ -1,7 +1,7 @@
 /* ============================================================================
  * Hoymiles Micro Storage — Power flow card
  * ----------------------------------------------------------------------------
- * Lovelace card: `custom:hoymiles-power-flow`
+ * Lovelace card: `custom:hoymiles-g2-power-flow`
  *
  * Draws the system as a **wiring diagram**, the way the vendor app does on its
  * system screen: one ringed icon per branch, the inverter in a rounded square
@@ -37,7 +37,7 @@
  *   rssi                                   Wi-Fi RSSI, dBm -> signal bars
  *
  * Card config:
- *   type: custom:hoymiles-power-flow
+ *   type: custom:hoymiles-g2-power-flow
  *   dev_id: MSA-280520260806      # required
  *   title: My home                # optional, defaults to the device id
  *   show_title: true              # optional, false hides the title + device id
@@ -761,7 +761,7 @@ function _hmPowerFlowRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-power-flow-editor");
+      return document.createElement("hoymiles-g2-power-flow-editor");
     }
 
     static getStubConfig() {
@@ -818,7 +818,7 @@ function _hmPowerFlowRegister() {
 
     setConfig(config) {
       if (!config || !config.dev_id) {
-        throw new Error("hoymiles-power-flow: 'dev_id' is required");
+        throw new Error("hoymiles-g2-power-flow: 'dev_id' is required");
       }
       this._config = { ...config };
       this._cache.clear();
@@ -1018,7 +1018,7 @@ function _hmPowerFlowRegister() {
      *
      * Three strategies, cheapest first: the conventional
      * ``<domain>.<slug(dev_id)>_<suffix>`` id, a prefix+suffix scan and
-     * finally the integration's ``hoymiles_<dev_id>_<suffix>`` unique id.
+     * finally the integration's ``hoymiles_g2_<dev_id>_<suffix>`` unique id.
      * Results are cached, because the scan is O(entities) and the card
      * re-renders on every state change.
      */
@@ -1052,7 +1052,7 @@ function _hmPowerFlowRegister() {
       }
 
       if (!found && hass.entities) {
-        const uniqueSuffix = `hoymiles_${this._dev()}_${suffix}`;
+        const uniqueSuffix = `hoymiles_g2_${this._dev()}_${suffix}`;
         for (const [entityId, entry] of Object.entries(hass.entities)) {
           if (entry && entry.unique_id === uniqueSuffix) {
             found = entityId;
@@ -1220,7 +1220,7 @@ function _hmPowerFlowRegister() {
 
     /**
      * The icon: four bars of increasing height. Geometry and colours match
-     * ``hoymiles-battery``'s `_signal()` exactly, so the same reading looks
+     * ``hoymiles-g2-battery``'s `_signal()` exactly, so the same reading looks
      * identical on both cards.
      */
     _signalBars(bars) {
@@ -1545,17 +1545,17 @@ function _hmPowerFlowRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-power-flow-editor")) {
-    customElements.define("hoymiles-power-flow-editor", HoymilesPowerFlowEditor);
+  if (!customElements.get("hoymiles-g2-power-flow-editor")) {
+    customElements.define("hoymiles-g2-power-flow-editor", HoymilesPowerFlowEditor);
   }
-  if (!customElements.get("hoymiles-power-flow")) {
-    customElements.define("hoymiles-power-flow", HoymilesPowerFlow);
+  if (!customElements.get("hoymiles-g2-power-flow")) {
+    customElements.define("hoymiles-g2-power-flow", HoymilesPowerFlow);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-power-flow")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-power-flow")) {
     window.customCards.push({
-      type: "hoymiles-power-flow",
+      type: "hoymiles-g2-power-flow",
       name: "Hoymiles Power Flow",
       description:
         "Illustrated live power flow (PV / storage / grid / load) of a Hoymiles "

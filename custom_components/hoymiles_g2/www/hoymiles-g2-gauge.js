@@ -1,7 +1,7 @@
 /* ============================================================================
  * Hoymiles Micro Storage — Gauge card
  * ----------------------------------------------------------------------------
- * Lovelace card: `custom:hoymiles-gauge`
+ * Lovelace card: `custom:hoymiles-g2-gauge`
  *
  * A stat tile with a single progress arc, like the vendor app's summary cards:
  * the title and an optional icon on top, the value underneath, and one green
@@ -15,7 +15,7 @@
  *   - `max` may be omitted, in which case the dial grows with the value.
  *
  * Card config:
- *   type: custom:hoymiles-gauge
+ *   type: custom:hoymiles-g2-gauge
  *   entity: sensor.x_battery_discharge_energy_today
  *   name: 当日发电量
  *   unit: kWh                 # optional display unit
@@ -155,7 +155,7 @@ function _hmGaugeRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-gauge-editor");
+      return document.createElement("hoymiles-g2-gauge-editor");
     }
 
     static getStubConfig() {
@@ -197,7 +197,7 @@ function _hmGaugeRegister() {
 
     setConfig(config) {
       if (!config || !config.entity) {
-        throw new Error("hoymiles-gauge: 'entity' is required");
+        throw new Error("hoymiles-g2-gauge: 'entity' is required");
       }
       this._config = { ...config };
     }
@@ -429,17 +429,17 @@ function _hmGaugeRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-gauge-editor")) {
-    customElements.define("hoymiles-gauge-editor", HoymilesGaugeEditor);
+  if (!customElements.get("hoymiles-g2-gauge-editor")) {
+    customElements.define("hoymiles-g2-gauge-editor", HoymilesGaugeEditor);
   }
-  if (!customElements.get("hoymiles-gauge")) {
-    customElements.define("hoymiles-gauge", HoymilesGauge);
+  if (!customElements.get("hoymiles-g2-gauge")) {
+    customElements.define("hoymiles-g2-gauge", HoymilesGauge);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-gauge")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-gauge")) {
     window.customCards.push({
-      type: "hoymiles-gauge",
+      type: "hoymiles-g2-gauge",
       name: "Hoymiles Gauge",
       description: "Arc gauge with needle and colour bands; rescales Wh to kWh for display.",
       preview: false,

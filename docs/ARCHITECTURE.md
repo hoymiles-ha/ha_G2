@@ -1,6 +1,6 @@
 # Architecture
 
-How the `hoymiles` integration talks to the device: topics, the firmware
+How the `hoymiles_g2` integration talks to the device: topics, the firmware
 discovery patches, the entity model and the availability logic.
 
 **English** · [简体中文](ARCHITECTURE.zh-Hans.md)
@@ -22,7 +22,7 @@ discovery patches, the entity model and the availability logic.
 | `number.py` | Per-phase output power (integration-local entity) |
 | `config_flow.py` | Device discovery and setup |
 | `options_flow.py` | TOU configuration wizard |
-| `services.py` / `services.yaml` | The `hoymiles.*` services |
+| `services.py` / `services.yaml` | The `hoymiles_g2.*` services |
 | `strings.json` / `translations/` | UI strings (`en`, `zh-Hans`) |
 | `brand/` | `icon.png` (256×256) and `logo.png` (657×256) |
 | `www/` | The eight Lovelace cards, plain ES modules |
@@ -40,9 +40,9 @@ the integration does not invent one. It subscribes:
 | `device/quick/state` (via `quick/state`) | Flat JSON, live values | 1 s |
 | `device/state` | Nested JSON, slower-moving values | 5 min |
 | `system/state` | System-level values, **master / standalone units only** | 5 min |
-| `hoymiles/<dev_id>/tou_day_plan/ack` | Day-plan acknowledgement | on demand |
-| `hoymiles/<dev_id>/tou_week_plan/ack` | Week-plan acknowledgement | on demand |
-| `hoymiles/<dev_id>/tou_plan/status` | Current plan report | on demand |
+| `hoymiles_g2/<dev_id>/tou_day_plan/ack` | Day-plan acknowledgement | on demand |
+| `hoymiles_g2/<dev_id>/tou_week_plan/ack` | Week-plan acknowledgement | on demand |
+| `hoymiles_g2/<dev_id>/tou_plan/status` | Current plan report | on demand |
 | `homeassistant/+/<dev_id>/config` | The firmware's own discovery payloads | on connect |
 
 Everything is per the *Hoymiles Micro Storage MQTT Protocol Development Guide
@@ -100,7 +100,7 @@ implementation is in `discovery_override.py`.
 > in both directions.
 >
 > The `availability_topic` and the EMS state topic both live under the
-> `hoymiles/<dev_id>/…` namespace and therefore cannot collide with firmware
+> `hoymiles_g2/<dev_id>/…` namespace and therefore cannot collide with firmware
 > topics.
 >
 > ⚠️ Home Assistant **does not rebuild subscriptions for entities that already
@@ -141,7 +141,7 @@ Whether the switch actually works depends on the firmware:
 
 Every entity carries an availability check. When `quick/state` has not arrived for
 more than **2 minutes** (or `device/state` / `system/state` for more than
-**11 minutes**), the integration sets `hoymiles/<dev_id>/availability` to
+**11 minutes**), the integration sets `hoymiles_g2/<dev_id>/availability` to
 `offline`. **Both the firmware-discovery entities and the integration's own
 entities** then go `unavailable`, so stale values are never presented as current.
 Pushing resumes → the state flips back to `online` automatically.
@@ -150,7 +150,7 @@ Pushing resumes → the state flips back to `online` automatically.
 
 Because early firmware provided no `state_topic` for `ems_mode`, the integration
 maintains a **retained state topic** of its own at
-`hoymiles/<dev_id>/ems_mode/state`:
+`hoymiles_g2/<dev_id>/ems_mode/state`:
 
 - As soon as anyone publishes to `…/ems_mode/command`, the integration echoes it
   there, so the UI and cards refresh immediately.
@@ -166,7 +166,7 @@ the editor stuck for up to 5 minutes after switching to `tou_plan`.
 Three-phase limit devices **do not read back** the limit, so `Phase A/B/C Output
 Power` shows the *last value written*, restored across Home Assistant restarts.
 Any phase that was never set falls back to the protocol lower bound of 100 W and
-logs a warning — use `hoymiles.set_phase_output_power` to set all three at once
+logs a warning — use `hoymiles_g2.set_phase_output_power` to set all three at once
 and avoid that.
 
 The firmware's own `phase_output_power` entity also becomes usable once the

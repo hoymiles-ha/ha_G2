@@ -1,15 +1,15 @@
 /* ============================================================================
  * Hoymiles Micro Storage — TOU (time-of-use) plan editor
  * ----------------------------------------------------------------------------
- * Lovelace card bundled with the `hoymiles` custom integration.
+ * Lovelace card bundled with the `hoymiles_g2` custom integration.
  * Protocol: 《禾迈微储MQTT协议开发指南》V0.5.1 §16 ~ §21
  *
  * The card talks to the device through the integration services
- * (hoymiles.set_tou_day_plan / set_tou_week_plan / get_tou_plan / set_ems_mode)
+ * (hoymiles_g2.set_tou_day_plan / set_tou_week_plan / get_tou_plan / set_ems_mode)
  * and falls back to `mqtt.publish` when the integration is not installed.
  *
  * Card config:
- *   type: custom:hoymiles-tou-editor
+ *   type: custom:hoymiles-g2-tou-editor
  *   dev_id: MSA-280520260806     # required
  *   title: TOU plan              # optional
  *   language: en                 # optional (en|zh); omit to follow Home Assistant
@@ -98,7 +98,7 @@ function _hmTouRegister() {
     }
 
     static getConfigElement() {
-      return document.createElement("hoymiles-tou-editor-editor");
+      return document.createElement("hoymiles-g2-tou-editor-editor");
     }
 
     static getStubConfig() {
@@ -200,7 +200,7 @@ function _hmTouRegister() {
 
     setConfig(config) {
       if (!config || !config.dev_id) {
-        throw new Error("hoymiles-tou-editor: 'dev_id' is required");
+        throw new Error("hoymiles-g2-tou-editor: 'dev_id' is required");
       }
       this._config = { ...config };
       this._resetDraft();
@@ -282,7 +282,7 @@ function _hmTouRegister() {
 
     _hasIntegration() {
       const services = (this._hass && this._hass.services) || {};
-      return !!(services.hoymiles && services.hoymiles.set_tou_day_plan);
+      return !!(services.hoymiles_g2 && services.hoymiles_g2.set_tou_day_plan);
     }
 
     _logLine(cls, text) {
@@ -299,7 +299,7 @@ function _hmTouRegister() {
     async _setMode(mode) {
       try {
         if (this._hasIntegration()) {
-          await this._hass.callService("hoymiles", "set_ems_mode", {
+          await this._hass.callService("hoymiles_g2", "set_ems_mode", {
             dev_id: this._dev(), mode,
           });
         } else {
@@ -318,7 +318,7 @@ function _hmTouRegister() {
 
     async _sendDayPlan(dayIdx, segments) {
       if (this._hasIntegration()) {
-        await this._hass.callService("hoymiles", "set_tou_day_plan", {
+        await this._hass.callService("hoymiles_g2", "set_tou_day_plan", {
           dev_id: this._dev(), day_idx: dayIdx, day_plan: segments,
         });
       } else {
@@ -330,7 +330,7 @@ function _hmTouRegister() {
 
     async _sendWeekPlan(weekPlan) {
       if (this._hasIntegration()) {
-        await this._hass.callService("hoymiles", "set_tou_week_plan", {
+        await this._hass.callService("hoymiles_g2", "set_tou_week_plan", {
           dev_id: this._dev(), week_plan: weekPlan,
         });
       } else {
@@ -347,7 +347,7 @@ function _hmTouRegister() {
         const beforeUpdate = before ? before.last_updated : null;
 
         if (this._hasIntegration()) {
-          await this._hass.callService("hoymiles", "get_tou_plan", { dev_id: this._dev(), week });
+          await this._hass.callService("hoymiles_g2", "get_tou_plan", { dev_id: this._dev(), week });
         } else {
           await this._publish(`homeassistant/sensor/${this._dev()}/tou_plan/get`, { week });
         }
@@ -616,17 +616,17 @@ function _hmTouRegister() {
     }
   }
 
-  if (!customElements.get("hoymiles-tou-editor-editor")) {
-    customElements.define("hoymiles-tou-editor-editor", HoymilesTouEditorEditor);
+  if (!customElements.get("hoymiles-g2-tou-editor-editor")) {
+    customElements.define("hoymiles-g2-tou-editor-editor", HoymilesTouEditorEditor);
   }
-  if (!customElements.get("hoymiles-tou-editor")) {
-    customElements.define("hoymiles-tou-editor", HoymilesTouEditor);
+  if (!customElements.get("hoymiles-g2-tou-editor")) {
+    customElements.define("hoymiles-g2-tou-editor", HoymilesTouEditor);
   }
 
   window.customCards = window.customCards || [];
-  if (!window.customCards.some((card) => card.type === "hoymiles-tou-editor")) {
+  if (!window.customCards.some((card) => card.type === "hoymiles-g2-tou-editor")) {
     window.customCards.push({
-      type: "hoymiles-tou-editor",
+      type: "hoymiles-g2-tou-editor",
       name: "Hoymiles TOU Editor",
       description: "Configure the time-of-use charge/discharge plan of a Hoymiles micro storage device.",
     });

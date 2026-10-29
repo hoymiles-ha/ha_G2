@@ -8,7 +8,7 @@ set_tou_day_plan:
       required: false
       selector:
         device:
-          integration: hoymiles
+          integration: hoymiles_g2
     dev_id:
       name: Device ID
       description: Device identifier, in the form client_prefix-SN. Optional when a device is selected.
@@ -45,7 +45,7 @@ set_tou_week_plan:
       required: false
       selector:
         device:
-          integration: hoymiles
+          integration: hoymiles_g2
     dev_id:
       name: Device ID
       description: Device identifier, in the form client_prefix-SN. Optional when a device is selected.
@@ -71,7 +71,7 @@ get_tou_plan:
       required: false
       selector:
         device:
-          integration: hoymiles
+          integration: hoymiles_g2
     dev_id:
       name: Device ID
       description: Device identifier, in the form client_prefix-SN. Optional when a device is selected.
@@ -98,7 +98,7 @@ set_ems_mode:
       required: false
       selector:
         device:
-          integration: hoymiles
+          integration: hoymiles_g2
     dev_id:
       name: Device ID
       description: Device identifier, in the form client_prefix-SN. Optional when a device is selected.
@@ -125,7 +125,7 @@ reboot:
       required: false
       selector:
         device:
-          integration: hoymiles
+          integration: hoymiles_g2
     dev_id:
       name: Device ID
       description: Device identifier, in the form client_prefix-SN. Optional when a device is selected.
@@ -146,7 +146,7 @@ set_phase_output_power:
       required: false
       selector:
         device:
-          integration: hoymiles
+          integration: hoymiles_g2
     dev_id:
       name: Device ID
       description: Device identifier, in the form client_prefix-SN. Optional when a device is selected.
